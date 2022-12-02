@@ -1,0 +1,68 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+
+Dim rs As ADODB.Recordset
+
+Set con = New ADODB.Connection
+
+
+Dim sampleName As String
+sampleName = "'" + TextBox01.Text + "'"
+
+Dim measurementDate As String
+measurementDate = "'" + Format(TextBox07.Text, "yyyy-MM-dd") + "'"
+
+Dim dx10 As String
+dx10 = "'" + TextBox11.Text + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+
+
+
+con.Open "Driver={MySQL ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Database=battery;User=battery;Password=3point14;"
+
+'Return
+
+'Sql = "insert into test_jared (record_number,purchaser,chemical) values(" & TextBox1.Text & ", " & TextBox2.Text & "," & TextBox3.Text & ");"
+'Sql = "insert into test_jared (sample_name,sample_letter,sample_type,description,experimentID,filename,measurement_date,measurement_operator,notebook_number,notes,Dx10,Dx50,Dx90) values(TEST1,TEST2,TEST3,TEST4,TEST5,TEST6,TEST7,TEST8,TEST9,TEST10,TEST11,TEST12,TEST13);"
+'Sql = "insert into battery.analysis_particle_sizing(sample_name,sample_letter,sample_type,description,experimentID,filename,measurement_date,measurement_operator,notebook_number,notes,Dx10,Dx50,Dx90) values(TextBox01.Text,TextBox02.Text &,TextBox03.Text,TextBox04.Text,TextBox05.Text,TextBox06.Text,TextBox07.Text,TextBox08.Text,TextBox09.Text,TextBox10.Text,TextBox11.Text,TextBox12.Text,TextBox13.Text);"
+'if(CheckIfNumeric(Textbox1.text)
+'Sql = "INSERT INTO battery.test_jared(purchaser,chemical) VALUES('" & TextBox1.Text & "','" & TextBox2.Text & "');"
+Sql = "insert into battery.analysis_particle_sizing"
+'Sql = Sql + "(sample_name,sample_letter,sample_type,description,experimentID,filename,"
+'Sql = Sql + "measurement_date,measurement_operator,notebook_number,notes,Dx10,Dx50,Dx90)"
+'Sql = Sql + "values('" & TextBox01.Text & "','" & TextBox02.Text & "','" & TextBox03.Text
+'Sql = Sql + "','" & TextBox04.Text & "','" & TextBox05.Text & "','" & TextBox06.Text
+'Sql = Sql + "','" & TextBox07.Text & "','" & TextBox08.Text & "','" & TextBox09.Text
+'Sql = Sql + "','" & TextBox10.Text & "','" & TextBox11.Text & "','" & TextBox12.Text
+'Sql = Sql + "','" & TextBox13.Text & "');"
+
+Sql = Sql + "(sample_name,sample_letter,sample_type,description,experimentID,filename,"
+Sql = Sql + "measurement_date,measurement_operator,notebook_number,notes,Dx10,Dx50,Dx90)"
+Sql = Sql + " values(" & sampleName & ",'" & TextBox02.Text & "','" & TextBox03.Text
+Sql = Sql + "','" & TextBox04.Text & "','" & TextBox05.Text & "','" & TextBox06.Text
+Sql = Sql + "'," & measurementDate & ",'" & TextBox08.Text & "','" & TextBox09.Text
+Sql = Sql + "','" & TextBox10.Text & "'," & dx10 & ",'" & TextBox12.Text
+Sql = Sql + "','" & TextBox13.Text & "');"
+
+'MsgBox Sql
+
+
+','11/22/2022'
+
+
+con.Execute Sql
+
+con.Close
+
+MsgBox "Done!"
+
+
+End Sub
+
+

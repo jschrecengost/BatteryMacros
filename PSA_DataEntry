@@ -7,11 +7,41 @@ Set con = New ADODB.Connection
 Dim sampleName As String
 sampleName = "'" + TextBox01.Text + "'"
 
+Dim sampleLetter As String
+sampleLetter = "'" + TextBox02.Text + "'"
+
+Dim sampleType As String
+sampleType = "'" + TextBox03.Text + "'"
+
+Dim description As String
+description = "'" + TextBox04.Text + "'"
+
+Dim ExperimentID As String
+ExperimentID = "'" + TextBox05.Text + "'"
+
+Dim fileName As String
+fileName = "'" + TextBox06.Text + "'"
+
 Dim measurementDate As String
 measurementDate = "'" + Format(TextBox07.Text, "yyyy-MM-dd") + "'"
 
+Dim measurementOperator As String
+measurementOperator = "'" + TextBox08.Text + "'"
+
+Dim notebookNumber As String
+notebookNumber = "'" + TextBox09.Text + "'"
+
+Dim Notes As String
+Notes = "'" + TextBox10.Text + "'"
+
 Dim dx10 As String
 dx10 = "'" + TextBox11.Text + "'"
+
+Dim dx50 As String
+dx50 = "'" + TextBox12.Text + "'"
+
+Dim dx90 As String
+dx90 = "'" + TextBox13.Text + "'"
 
 Dim Sql As String
 Sql = ""
@@ -39,3 +69,5 @@ con.Close
 MsgBox "Done!"
 
 End Sub
+
+

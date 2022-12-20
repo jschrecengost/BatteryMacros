@@ -5,36 +5,60 @@ Dim rs As ADODB.Recordset
 Set con = New ADODB.Connection
 
 Dim sampleName As String
-sampleName = "'" + TextBox01.Text + "'"
-
+sampleName = TextBox01.Text
 Dim sampleLetter As String
-If (validateString(TextBox02.Text) = True) Then
-sampleLetter = "'" + TextBox02.Text + "'"
-Else
-MsgBox "Error with Sample Letter!"
+sampleLetter = TextBox02.Text
+Dim sampletype As String
+sampletype = TextBox03.Text
+Dim description As String
+description = TextBox04.Text
+Dim experimentID As String
+experimentID = TextBox05.Text
+Dim filename As String
+filename = TextBox06.Text
+Dim measurementDate As String
+measurementDate = TextBox07.Text
+Dim meaurementOperator As String
+measurementOperator = TextBox08.Text
+Dim notebookNumber As String
+notebookNumber = TextBox09.Text
+Dim notes As String
+notes = TextBox10.Text
+Dim dx10 As String
+dx10 = TextBox11.Text
+Dim dx50 As String
+dx50 = TextBox12.Text
+Dim Dx90 As String
+Dx90 = TextBox13.Text
 
-Exit Sub
+ If (IsEmptyCheck(sampleName) = False) Then
+   MsgBox "Error With Sample Name!"
+ Else
+   sampleName = "'" + sampleName + "'"
+    Exit Sub
 
 End If
 
-Dim sampleType As String
-sampleType = "'" + TextBox03.Text + "'"
 
-Dim description As String
-description = "'" + TextBox04.Text + "'"
+If (validateString(sampleLetter) = True) Then
+MsgBox "Error with Sample Letter!"
+Else
+sampleLetter = "'" + sampleLetter + "'"
+Exit Sub
+End If
 
-Dim ExperimentID As String
-ExperimentID = "'" + TextBox05.Text + "'"
+sampletype = "'" + sampletype + "'"
 
-Dim fileName As String
-fileName = "'" + TextBox06.Text + "'"
+description = "'" + description + "'"
 
-Dim measurementDate As String
-measurementDate = "'" + Format(TextBox07.Text, "yyyy-MM-dd") + "'"
+experimentID = "'" + experimentID + "'"
 
-Dim measurementOperator As String
-If (validateString(TextBox08.Text) = True) Then
-measurementOperator = "'" + TextBox08.Text + "'"
+filename = "'" + filename + "'"
+
+measurementDate = "'" + Format(measurementDate, "yyyy-MM-dd") + "'"
+
+If (validateString(measurementOperator) = True) Then
+measurementOperator = "'" + measurementOperator + "'"
 Else
 MsgBox "Error with Measurement Operator!"
 
@@ -42,15 +66,12 @@ Exit Sub
 
 End If
 
-Dim notebookNumber As String
-notebookNumber = "'" + TextBox09.Text + "'"
+notebookNumber = "'" + notebookNumber + "'"
 
-Dim Notes As String
-Notes = "'" + TextBox10.Text + "'"
+notes = "'" + notes + "'"
 
-Dim dx10 As String
-If (validateNumerically(TextBox11.Text) = True) Then
-dx10 = "'" + TextBox11.Text + "'"
+If (validateNumerically(dx10) = True) Then
+dx10 = "'" + dx10 + "'"
 Else
 MsgBox "Error with Dx10!"
 
@@ -58,10 +79,8 @@ Exit Sub
 
 End If
 
-
-Dim dx50 As String
-If (validateNumerically(TextBox12.Text) = True) Then
-dx50 = "'" + TextBox12.Text + "'"
+If (validateNumerically(dx50) = True) Then
+dx50 = "'" + dx50 + "'"
 Else
 MsgBox "Error with Dx50!"
 
@@ -69,9 +88,8 @@ Exit Sub
 
 End If
 
-Dim dx90 As String
-If (validateNumerically(TextBox13.Text) = True) Then
-dx90 = "'" + TextBox13.Text + "'"
+If (validateNumerically(Dx90) = True) Then
+Dx90 = "'" + Dx90 + "'"
 Else
 MsgBox "Error with Dx90!"
 
@@ -93,16 +111,16 @@ Sql = "insert into battery.analysis_particle_sizing"
 
 Sql = Sql + "(sample_name,sample_letter,sample_type,description,experimentID,filename,"
 Sql = Sql + "measurement_date,measurement_operator,notebook_number,notes,Dx10,Dx50,Dx90)"
-Sql = Sql + " values(" & sampleName & "," & sampleLetter & "," & sampleType
-Sql = Sql + "," & description & "," & ExperimentID & "," & fileName
+Sql = Sql + " values(" & sampleName & "," & sampleLetter & "," & sampletype
+Sql = Sql + "," & description & "," & experimentID & "," & filename
 Sql = Sql + "," & measurementDate & "," & measurementOperator & "," & notebookNumber
-Sql = Sql + "," & Notes & "," & dx10 & "," & dx50
-Sql = Sql + "," & dx90 & ");"
+Sql = Sql + "," & notes & "," & dx10 & "," & dx50
+Sql = Sql + "," & Dx90 & ");"
 
 'MsgBox Sql
 'Above line displays a messagebox with the current value of the variable Sql
 
-con.Execute Sql
+'con.Execute Sql
 con.Close
 MsgBox "Done!"
 
@@ -191,6 +209,12 @@ Next
 
 End Function
 
+Private Function IsEmptyCheck(ByVal textBoxText As String) As Boolean
+IsEmptyCheck = True
+If (IsEmpty(textBoxText) = True) Then
+    MsgBox "Error with Sample Name!"
+    Else
+textBoxText = False
 
-
-
+End If
+End Function

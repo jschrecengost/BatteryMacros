@@ -1,0 +1,147 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim sampleName As String
+sampleName = "'" + TextBox01.Text + "'"
+
+Dim sampleLetter As String
+sampleLetter = "'" + TextBox02.Text + "'"
+
+Dim experimentID As String
+experimentID = "'" + TextBox03.Text + "'"
+
+Dim spindleID As String
+spindleID = "'" + TextBox04.Text + "'"
+
+Dim sampleType As String
+sampleType = "'" + TextBox05.Text + "'"
+
+Dim description As String
+description = "'" + TextBox06.Text + "'"
+
+Dim measurementDate As String
+measurementDate = "'" + Format(TextBox07.Text, "yyyy-MM-dd") + "'"
+
+Dim measurementOperator As String
+measurementOperator = "'" + TextBox08.Text + "'"
+
+Dim waterAddition As String
+waterAddition = "'" + TextBox09.Text + "'"
+
+If (validateNumerically(viscosity1) = False) Then
+viscosity1 = "'" + TextBox10.Text + "'"
+Else
+MsgBox "Error with viscosity1!"
+
+Exit Sub
+
+End If
+
+If (validateNumerically(viscosity2) = False) Then
+viscosity2 = "'" + TextBox11.Text + "'"
+Else
+MsgBox "Error with viscosity2!"
+
+Exit Sub
+
+End If
+
+If (validateNumerically(viscosity3) = False) Then
+viscosity3 = "'" + TextBox12.Text + "'"
+Else
+MsgBox "Error with viscosity3!"
+
+Exit Sub
+
+End If
+
+If (validateNumerically(viscosity4) = False) Then
+viscosity4 = "'" + TextBox13.Text + "'"
+Else
+MsgBox "Error with viscosity4!"
+
+Exit Sub
+
+End If
+
+If (validateNumerically(viscosity5) = False) Then
+viscosity5 = "'" + TextBox14.Text + "'"
+Else
+MsgBox "Error with viscosity5!"
+
+Exit Sub
+
+End If
+
+Dim Sql As String
+Sql = ""
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+con.Open "Driver={MySQL ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Database=battery;User=battery;Password=3point14;"
+
+Sql = "insert into battery.analysis_viscosity"
+
+Sql = Sql + "(sample_name,sample_letter,experimentID,spindleID,sample_type,"
+Sql = Sql + "description,measurement_date,measurement_operator,amount_water_added,"
+Sql = Sql + "viscosity1, viscosity2, viscosity3, viscosity4, viscosity5)"
+Sql = Sql + " values(" & sampleName & "," & sampleLetter & "," & experimentID
+Sql = Sql + "," & spindleID & "," & sampleType & "," & description
+Sql = Sql + "," & measurementDate & "," & measurementOperator & "," & waterAddition
+Sql = Sql + "," & viscosity1 & "," & viscosity2 & "," & viscosity3
+Sql = Sql + "," & viscosity4 & "," & viscosity5 & ");"
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+Private Function validateNumerically(ByVal textBoxText As String) As Boolean
+Dim AllowedArray
+validateNumerically = False
+AllowedArray = Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".")
+Dim allGood As Boolean
+allGood = False
+
+Dim Counter As Integer
+Dim Counter2 As Integer
+
+Dim arrayLength As Integer
+arrayLength = UBound(AllowedArray) - LBound(AllowedArray) + 1
+
+MyString = "AutomateExcel" 'define string
+Dim currentCharacter As String
+
+
+For Counter = 1 To Len(textBoxText)
+currentCharacter = Mid(textBoxText, Counter, 1)
+For Counter2 = 1 To arrayLength
+Dim intResult As Integer
+intResult = StrComp(currentCharacter, AllowedArray(Counter2 - 1))
+
+
+If (intResult = 0) Then
+'MsgBox "Error, Character not allowed! " & currentCharacter
+validateNumerically = True
+End If
+
+
+
+'MsgBox notAllowedArray(Counter2)
+    'do something to each character in string
+    'here we'll msgbox each character
+   ' MsgBox Mid(textBoxText, Counter, 1)
+Next
+Next
+
+
+End Function
+

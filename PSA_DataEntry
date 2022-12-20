@@ -8,7 +8,14 @@ Dim sampleName As String
 sampleName = "'" + TextBox01.Text + "'"
 
 Dim sampleLetter As String
+If (validateString(TextBox02.Text) = True) Then
 sampleLetter = "'" + TextBox02.Text + "'"
+Else
+MsgBox "Error with Sample Letter!"
+
+Exit Sub
+
+End If
 
 Dim sampleType As String
 sampleType = "'" + TextBox03.Text + "'"
@@ -26,7 +33,14 @@ Dim measurementDate As String
 measurementDate = "'" + Format(TextBox07.Text, "yyyy-MM-dd") + "'"
 
 Dim measurementOperator As String
+If (validateString(TextBox08.Text) = True) Then
 measurementOperator = "'" + TextBox08.Text + "'"
+Else
+MsgBox "Error with Measurement Operator!"
+
+Exit Sub
+
+End If
 
 Dim notebookNumber As String
 notebookNumber = "'" + TextBox09.Text + "'"
@@ -35,16 +49,40 @@ Dim Notes As String
 Notes = "'" + TextBox10.Text + "'"
 
 Dim dx10 As String
+If (validateNumerically(TextBox11.Text) = True) Then
 dx10 = "'" + TextBox11.Text + "'"
+Else
+MsgBox "Error with Dx10!"
+
+Exit Sub
+
+End If
+
 
 Dim dx50 As String
+If (validateNumerically(TextBox12.Text) = True) Then
 dx50 = "'" + TextBox12.Text + "'"
+Else
+MsgBox "Error with Dx50!"
+
+Exit Sub
+
+End If
 
 Dim dx90 As String
+If (validateNumerically(TextBox13.Text) = True) Then
 dx90 = "'" + TextBox13.Text + "'"
+Else
+MsgBox "Error with Dx90!"
 
+Exit Sub
+
+End If
 Dim Sql As String
 Sql = ""
+
+'MsgBox validateString(sampleLetter)
+
 
 'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
 'Above line shows how to convert an unformatted date string to a MySQL format string
@@ -55,11 +93,11 @@ Sql = "insert into battery.analysis_particle_sizing"
 
 Sql = Sql + "(sample_name,sample_letter,sample_type,description,experimentID,filename,"
 Sql = Sql + "measurement_date,measurement_operator,notebook_number,notes,Dx10,Dx50,Dx90)"
-Sql = Sql + " values(" & sampleName & ",'" & TextBox02.Text & "','" & TextBox03.Text
-Sql = Sql + "','" & TextBox04.Text & "','" & TextBox05.Text & "','" & TextBox06.Text
-Sql = Sql + "'," & measurementDate & ",'" & TextBox08.Text & "','" & TextBox09.Text
-Sql = Sql + "','" & TextBox10.Text & "'," & dx10 & ",'" & TextBox12.Text
-Sql = Sql + "','" & TextBox13.Text & "');"
+Sql = Sql + " values(" & sampleName & "," & sampleLetter & "," & sampleType
+Sql = Sql + "," & description & "," & ExperimentID & "," & fileName
+Sql = Sql + "," & measurementDate & "," & measurementOperator & "," & notebookNumber
+Sql = Sql + "," & Notes & "," & dx10 & "," & dx50
+Sql = Sql + "," & dx90 & ");"
 
 'MsgBox Sql
 'Above line displays a messagebox with the current value of the variable Sql
@@ -69,5 +107,90 @@ con.Close
 MsgBox "Done!"
 
 End Sub
+
+Private Function validateString(ByVal textBoxText As String) As Boolean
+Dim notAllowedArray
+validateString = True
+notAllowedArray = Array("#", "=", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".")
+Dim allGood As Boolean
+allGood = True
+
+Dim Counter As Integer
+Dim Counter2 As Integer
+
+Dim arrayLength As Integer
+arrayLength = UBound(notAllowedArray) - LBound(notAllowedArray) + 1
+
+MyString = "AutomateExcel" 'define string
+Dim currentCharacter As String
+
+
+For Counter = 1 To Len(textBoxText)
+currentCharacter = Mid(textBoxText, Counter, 1)
+For Counter2 = 1 To arrayLength
+Dim intResult As Integer
+intResult = StrComp(currentCharacter, notAllowedArray(Counter2 - 1))
+
+
+If (intResult = 0) Then
+'MsgBox "Error, Character not allowed! " & currentCharacter
+validateString = False
+End If
+
+
+
+'MsgBox notAllowedArray(Counter2)
+    'do something to each character in string
+    'here we'll msgbox each character
+   ' MsgBox Mid(textBoxText, Counter, 1)
+Next
+Next
+
+
+End Function
+
+
+Private Function validateNumerically(ByVal textBoxText As String) As Boolean
+Dim AllowedArray
+validateNumerically = False
+AllowedArray = Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".")
+Dim allGood As Boolean
+allGood = False
+
+Dim Counter As Integer
+Dim Counter2 As Integer
+
+Dim arrayLength As Integer
+arrayLength = UBound(AllowedArray) - LBound(AllowedArray) + 1
+
+MyString = "AutomateExcel" 'define string
+Dim currentCharacter As String
+
+
+For Counter = 1 To Len(textBoxText)
+currentCharacter = Mid(textBoxText, Counter, 1)
+For Counter2 = 1 To arrayLength
+Dim intResult As Integer
+intResult = StrComp(currentCharacter, AllowedArray(Counter2 - 1))
+
+
+If (intResult = 0) Then
+'MsgBox "Error, Character not allowed! " & currentCharacter
+validateNumerically = True
+End If
+
+
+
+'MsgBox notAllowedArray(Counter2)
+    'do something to each character in string
+    'here we'll msgbox each character
+   ' MsgBox Mid(textBoxText, Counter, 1)
+Next
+Next
+
+
+End Function
+
+
 
 

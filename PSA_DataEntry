@@ -37,9 +37,9 @@ Exit Sub
 End If
 
 If (validateString(sampleLetter) = True) Then
-MsgBox "Error with Sample Letter!"
-Else
 sampleLetter = "'" + sampleLetter + "'"
+Else
+MsgBox "Error with Sample Letter!"
 Exit Sub
 End If
 
@@ -51,7 +51,14 @@ experimentID = "'" + experimentID + "'"
 
 filename = "'" + filename + "'"
 
-measurementDate = "'" + Format(measurementDate, "yyyy-MM-dd") + "'"
+If (dateCheck(measurementDate) = True) Then
+measurementDate = Format(measurementDate, "YYYY-MM-DD")
+TextBox07.Text = measurementDate
+measurementDate = "'" + measurementDate + "'"
+Else
+MsgBox "Incorrect Measurement Date Format"
+Exit Sub
+End If
 
 If (validateString(measurementOperator) = True) Then
 measurementOperator = "'" + measurementOperator + "'"
@@ -94,6 +101,7 @@ Exit Sub
 End If
 Dim Sql As String
 Sql = ""
+
 
 'MsgBox validateString(sampleLetter)
 
@@ -213,4 +221,29 @@ If (IsEmpty(textBoxText) = True) Then
 textBoxText = False
 
 End If
+End Function
+
+Private Function dateCheck(ByVal textBoxText As String) As Boolean
+
+dateCheck = False
+Dim datevalue As Date
+On Error GoTo TEST
+datevalue = CDate(textBoxText)
+
+Dim testString
+testString = Format(textBoxText, "YYYY-MM-DD")
+
+If (IsDate(textBoxText)) Then
+dateCheck = True
+MsgBox "WOOO!"
+Exit Function
+
+TEST:
+ MsgBox "ERROR"
+ 
+Else
+  MsgBox "Please use a valid yyyy-mm-dd date format!"
+
+End If
+ 
 End Function

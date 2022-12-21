@@ -5,34 +5,69 @@ Dim rs As ADODB.Recordset
 Set con = New ADODB.Connection
 
 Dim sampleName As String
-sampleName = "'" + TextBox01.Text + "'"
-
+sampleName = TextBox01.Text
 Dim sampleLetter As String
-sampleLetter = "'" + TextBox02.Text + "'"
-
+sampleLetter = TextBox02.Text
 Dim experimentID As String
-experimentID = "'" + TextBox03.Text + "'"
-
+experimentID = TextBox03.Text
 Dim spindleID As String
-spindleID = "'" + TextBox04.Text + "'"
-
+spindleID = TextBox04.Text
 Dim sampleType As String
-sampleType = "'" + TextBox05.Text + "'"
-
+sampleType = TextBox05.Text
 Dim description As String
-description = "'" + TextBox06.Text + "'"
-
+description = TextBox06.Text
 Dim measurementDate As String
-measurementDate = "'" + Format(TextBox07.Text, "yyyy-MM-dd") + "'"
-
+measurementDate = TextBox07.Text
 Dim measurementOperator As String
-measurementOperator = "'" + TextBox08.Text + "'"
-
+measurementOperator = TextBox08.Text
 Dim waterAddition As String
-waterAddition = "'" + TextBox09.Text + "'"
+waterAddition = TextBox09.Text
+Dim viscosity1 As String
+viscosity1 = TextBox10.Text
+Dim viscosity2 As String
+viscosity2 = TextBox11.Text
+Dim viscosity3 As String
+viscosity3 = TextBox12.Text
+Dim viscosity4 As String
+viscosity4 = TextBox13.Text
+Dim viscosity5 As String
+viscosity5 = TextBox14.Text
 
-If (validateNumerically(viscosity1) = False) Then
-viscosity1 = "'" + TextBox10.Text + "'"
+If sampleName = "" Then
+MsgBox "Enter Sample Name!"
+Exit Sub
+End If
+
+If (validateString(sampleLetter) = True) Then
+sampleLetter = "'" + sampleLetter + "'"
+Else
+MsgBox "Error with Sample Letter!"
+Exit Sub
+End If
+
+experimentID = "'" + experimentID + "'"
+
+spindleID = "'" + spindleID + "'"
+
+sampleType = "'" + sampleType + "'"
+
+description = "'" + description + "'"
+
+If (dateCheck(measurementDate) = True) Then
+measurementDate = Format(measurementDate, "YYYY-MM-DD")
+TextBox07.Text = measurementDate
+measurementDate = "'" + measurementDate + "'"
+Else
+MsgBox "Incorrect Measurement Date Format"
+Exit Sub
+End If
+
+measurementOperator = "'" + measurementOperator + "'"
+
+waterAddition = "'" + waterAddition + "'"
+
+If (validateNumerically(viscosity1) = True) Then
+viscosity1 = "'" + viscosity1 + "'"
 Else
 MsgBox "Error with viscosity1!"
 
@@ -40,8 +75,8 @@ Exit Sub
 
 End If
 
-If (validateNumerically(viscosity2) = False) Then
-viscosity2 = "'" + TextBox11.Text + "'"
+If (validateNumerically(viscosity2) = True) Then
+viscosity2 = "'" + viscosity2 + "'"
 Else
 MsgBox "Error with viscosity2!"
 
@@ -49,8 +84,8 @@ Exit Sub
 
 End If
 
-If (validateNumerically(viscosity3) = False) Then
-viscosity3 = "'" + TextBox12.Text + "'"
+If (validateNumerically(viscosity3) = True) Then
+viscosity3 = "'" + viscosity3 + "'"
 Else
 MsgBox "Error with viscosity3!"
 
@@ -58,8 +93,8 @@ Exit Sub
 
 End If
 
-If (validateNumerically(viscosity4) = False) Then
-viscosity4 = "'" + TextBox13.Text + "'"
+If (validateNumerically(viscosity4) = True) Then
+viscosity4 = "'" + viscosity4 + "'"
 Else
 MsgBox "Error with viscosity4!"
 
@@ -67,8 +102,8 @@ Exit Sub
 
 End If
 
-If (validateNumerically(viscosity5) = False) Then
-viscosity5 = "'" + TextBox14.Text + "'"
+If (validateNumerically(viscosity5) = True) Then
+viscosity5 = "'" + viscosity5 + "'"
 Else
 MsgBox "Error with viscosity5!"
 
@@ -98,7 +133,7 @@ Sql = Sql + "," & viscosity4 & "," & viscosity5 & ");"
 'MsgBox Sql
 'Above line displays a messagebox with the current value of the variable Sql
 
-con.Execute Sql
+'con.Execute Sql
 con.Close
 MsgBox "Done!"
 
@@ -143,5 +178,72 @@ Next
 Next
 
 
+End Function
+
+Private Function validateString(ByVal textBoxText As String) As Boolean
+Dim notAllowedArray
+validateString = True
+notAllowedArray = Array("#", "=", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".")
+Dim allGood As Boolean
+allGood = True
+
+Dim Counter As Integer
+Dim Counter2 As Integer
+
+Dim arrayLength As Integer
+arrayLength = UBound(notAllowedArray) - LBound(notAllowedArray) + 1
+
+MyString = "AutomateExcel" 'define string
+Dim currentCharacter As String
+
+
+For Counter = 1 To Len(textBoxText)
+currentCharacter = Mid(textBoxText, Counter, 1)
+For Counter2 = 1 To arrayLength
+Dim intResult As Integer
+intResult = StrComp(currentCharacter, notAllowedArray(Counter2 - 1))
+
+
+If (intResult = 0) Then
+'MsgBox "Error, Character not allowed! " & currentCharacter
+validateString = False
+End If
+
+
+
+'MsgBox notAllowedArray(Counter2)
+    'do something to each character in string
+    'here we'll msgbox each character
+   ' MsgBox Mid(textBoxText, Counter, 1)
+Next
+Next
+
+
+End Function
+
+
+Private Function dateCheck(ByVal textBoxText As String) As Boolean
+
+dateCheck = False
+Dim datevalue As Date
+On Error GoTo TEST
+datevalue = CDate(textBoxText)
+
+Dim testString
+testString = Format(textBoxText, "YYYY-MM-DD")
+
+If (IsDate(textBoxText)) Then
+dateCheck = True
+MsgBox "WOOO!"
+Exit Function
+
+TEST:
+ MsgBox "ERROR"
+ 
+Else
+  MsgBox "Please use a valid yyyy-mm-dd date format!"
+
+End If
+ 
 End Function
 

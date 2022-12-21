@@ -31,14 +31,10 @@ dx50 = TextBox12.Text
 Dim Dx90 As String
 Dx90 = TextBox13.Text
 
- If (IsEmptyCheck(sampleName) = False) Then
-   MsgBox "Error With Sample Name!"
- Else
-   sampleName = "'" + sampleName + "'"
-    Exit Sub
-
+If sampleName = "" Then
+MsgBox "Enter Sample Name!"
+Exit Sub
 End If
-
 
 If (validateString(sampleLetter) = True) Then
 MsgBox "Error with Sample Letter!"

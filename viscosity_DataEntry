@@ -37,6 +37,7 @@ If sampleName = "" Then
 MsgBox "Enter Sample Name!"
 Exit Sub
 End If
+sampleName = "'" + sampleName + "'"
 
 If (validateString(sampleLetter) = True) Then
 sampleLetter = "'" + sampleLetter + "'"
@@ -133,7 +134,7 @@ Sql = Sql + "," & viscosity4 & "," & viscosity5 & ");"
 'MsgBox Sql
 'Above line displays a messagebox with the current value of the variable Sql
 
-'con.Execute Sql
+con.Execute Sql
 con.Close
 MsgBox "Done!"
 
@@ -234,7 +235,6 @@ testString = Format(textBoxText, "YYYY-MM-DD")
 
 If (IsDate(textBoxText)) Then
 dateCheck = True
-MsgBox "WOOO!"
 Exit Function
 
 TEST:

@@ -39,7 +39,7 @@ Exit Sub
 End If
 sampleName = "'" + sampleName + "'"
 
-If (validateString(sampleLetter) = True) Then
+If (validateString(sampleLetter) = True) And sampleLetter <> "" Then
 sampleLetter = "'" + sampleLetter + "'"
 Else
 MsgBox "Error with Sample Letter!"
@@ -54,7 +54,7 @@ sampleType = "'" + sampleType + "'"
 
 description = "'" + description + "'"
 
-If (dateCheck(measurementDate) = True) Then
+If (dateCheck(measurementDate) = True) And measurementDate <> "" Then
 measurementDate = Format(measurementDate, "YYYY-MM-DD")
 TextBox07.Text = measurementDate
 measurementDate = "'" + measurementDate + "'"
@@ -63,11 +63,16 @@ MsgBox "Incorrect Measurement Date Format"
 Exit Sub
 End If
 
+If (validateString(measurementOperator) = True) And measurementOperator <> "" Then
 measurementOperator = "'" + measurementOperator + "'"
+Else
+MsgBox "Error with Measurement Operator!"
+Exit Sub
+End If
 
 waterAddition = "'" + waterAddition + "'"
 
-If (validateNumerically(viscosity1) = True) Then
+If (validateNumerically(viscosity1) = True) And viscosity1 <> "" Then
 viscosity1 = "'" + viscosity1 + "'"
 Else
 MsgBox "Error with viscosity1!"
@@ -76,7 +81,7 @@ Exit Sub
 
 End If
 
-If (validateNumerically(viscosity2) = True) Then
+If (validateNumerically(viscosity2) = True) And viscosity2 <> "" Then
 viscosity2 = "'" + viscosity2 + "'"
 Else
 MsgBox "Error with viscosity2!"
@@ -85,7 +90,7 @@ Exit Sub
 
 End If
 
-If (validateNumerically(viscosity3) = True) Then
+If (validateNumerically(viscosity3) = True) And viscosity3 <> "" Then
 viscosity3 = "'" + viscosity3 + "'"
 Else
 MsgBox "Error with viscosity3!"
@@ -94,7 +99,7 @@ Exit Sub
 
 End If
 
-If (validateNumerically(viscosity4) = True) Then
+If (validateNumerically(viscosity4) = True) And viscosity4 <> "" Then
 viscosity4 = "'" + viscosity4 + "'"
 Else
 MsgBox "Error with viscosity4!"
@@ -103,7 +108,7 @@ Exit Sub
 
 End If
 
-If (validateNumerically(viscosity5) = True) Then
+If (validateNumerically(viscosity5) = True) And viscosity5 <> "" Then
 viscosity5 = "'" + viscosity5 + "'"
 Else
 MsgBox "Error with viscosity5!"
@@ -246,4 +251,9 @@ Else
 End If
  
 End Function
+
+Private Sub TextBox14_Change()
+
+End Sub
+
 

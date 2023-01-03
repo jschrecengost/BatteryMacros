@@ -28,8 +28,8 @@ Dim dx10 As String
 dx10 = TextBox11.Text
 Dim dx50 As String
 dx50 = TextBox12.Text
-Dim Dx90 As String
-Dx90 = TextBox13.Text
+Dim dx90 As String
+dx90 = TextBox13.Text
 
 If sampleName = "" Then
 MsgBox "Enter Sample Name!"
@@ -37,7 +37,7 @@ Exit Sub
 End If
 sampleName = "'" + sampleName + "'"
 
-If (validateString(sampleLetter) = True) Then
+If (validateString(sampleLetter) = True) And sampleLetter <> "" Then
 sampleLetter = "'" + sampleLetter + "'"
 Else
 MsgBox "Error with Sample Letter!"
@@ -52,7 +52,7 @@ experimentID = "'" + experimentID + "'"
 
 filename = "'" + filename + "'"
 
-If (dateCheck(measurementDate) = True) Then
+If (dateCheck(measurementDate) = True) And measurementDate <> "" Then
 measurementDate = Format(measurementDate, "YYYY-MM-DD")
 TextBox07.Text = measurementDate
 measurementDate = "'" + measurementDate + "'"
@@ -61,45 +61,38 @@ MsgBox "Incorrect Measurement Date Format"
 Exit Sub
 End If
 
-If (validateString(measurementOperator) = True) Then
+If (validateString(measurementOperator) = True) And measurementOperator <> "" Then
 measurementOperator = "'" + measurementOperator + "'"
 Else
 MsgBox "Error with Measurement Operator!"
-
 Exit Sub
-
 End If
 
 notebookNumber = "'" + notebookNumber + "'"
 
 notes = "'" + notes + "'"
 
-If (validateNumerically(dx10) = True) Then
+If (validateNumerically(dx10) = False) And dx10 <> "" Then
 dx10 = "'" + dx10 + "'"
 Else
 MsgBox "Error with Dx10!"
-
 Exit Sub
-
 End If
 
-If (validateNumerically(dx50) = True) Then
+If (validateNumerically(dx50) = False) And dx50 <> "" Then
 dx50 = "'" + dx50 + "'"
 Else
 MsgBox "Error with Dx50!"
-
 Exit Sub
-
 End If
 
-If (validateNumerically(Dx90) = True) Then
-Dx90 = "'" + Dx90 + "'"
+If (validateNumerically(dx90) = False) And dx90 <> "" Then
+dx90 = "'" + dx90 + "'"
 Else
 MsgBox "Error with Dx90!"
-
 Exit Sub
-
 End If
+
 Dim Sql As String
 Sql = ""
 
@@ -120,7 +113,7 @@ Sql = Sql + " values(" & sampleName & "," & sampleLetter & "," & sampletype
 Sql = Sql + "," & description & "," & experimentID & "," & filename
 Sql = Sql + "," & measurementDate & "," & measurementOperator & "," & notebookNumber
 Sql = Sql + "," & notes & "," & dx10 & "," & dx50
-Sql = Sql + "," & Dx90 & ");"
+Sql = Sql + "," & dx90 & ");"
 
 'MsgBox Sql
 'Above line displays a messagebox with the current value of the variable Sql
@@ -131,7 +124,7 @@ MsgBox "Done!"
 
 End Sub
 
-Private Function validateString(ByVal textBoxText As String) As Boolean
+Private Function validateString(ByVal textboxtext As String) As Boolean
 Dim notAllowedArray
 validateString = True
 notAllowedArray = Array("#", "=", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".")
@@ -148,8 +141,8 @@ MyString = "AutomateExcel" 'define string
 Dim currentCharacter As String
 
 
-For Counter = 1 To Len(textBoxText)
-currentCharacter = Mid(textBoxText, Counter, 1)
+For Counter = 1 To Len(textboxtext)
+currentCharacter = Mid(textboxtext, Counter, 1)
 For Counter2 = 1 To arrayLength
 Dim intResult As Integer
 intResult = StrComp(currentCharacter, notAllowedArray(Counter2 - 1))
@@ -173,12 +166,12 @@ Next
 End Function
 
 
-Private Function validateNumerically(ByVal textBoxText As String) As Boolean
+Private Function validateNumerically(ByVal textboxtext As String) As Boolean
 Dim AllowedArray
-validateNumerically = False
+validateNumerically = True
 AllowedArray = Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".")
 Dim allGood As Boolean
-allGood = False
+allGood = True
 
 Dim Counter As Integer
 Dim Counter2 As Integer
@@ -190,8 +183,8 @@ MyString = "AutomateExcel" 'define string
 Dim currentCharacter As String
 
 
-For Counter = 1 To Len(textBoxText)
-currentCharacter = Mid(textBoxText, Counter, 1)
+For Counter = 1 To Len(textboxtext)
+currentCharacter = Mid(textboxtext, Counter, 1)
 For Counter2 = 1 To arrayLength
 Dim intResult As Integer
 intResult = StrComp(currentCharacter, AllowedArray(Counter2 - 1))
@@ -199,7 +192,7 @@ intResult = StrComp(currentCharacter, AllowedArray(Counter2 - 1))
 
 If (intResult = 0) Then
 'MsgBox "Error, Character not allowed! " & currentCharacter
-validateNumerically = True
+validateNumerically = False
 End If
 
 
@@ -214,29 +207,28 @@ Next
 
 End Function
 
-Private Function IsEmptyCheck(ByVal textBoxText As String) As Boolean
-IsEmptyCheck = True
-If (IsEmpty(textBoxText) = True) Then
+Private Function IsEmptyCheck(ByVal textboxtext As String) As Boolean
+IsEmptyCheck = False
+If (IsEmpty(textboxtext) = True) Then
     MsgBox "Error with Sample Name!"
     Else
-textBoxText = False
+textboxtext = False
 
 End If
 End Function
 
-Private Function dateCheck(ByVal textBoxText As String) As Boolean
+Private Function dateCheck(ByVal textboxtext As String) As Boolean
 
 dateCheck = False
 Dim datevalue As Date
 On Error GoTo TEST
-datevalue = CDate(textBoxText)
+datevalue = CDate(textboxtext)
 
 Dim testString
-testString = Format(textBoxText, "YYYY-MM-DD")
+testString = Format(textboxtext, "YYYY-MM-DD")
 
-If (IsDate(textBoxText)) Then
+If (IsDate(textboxtext)) Then
 dateCheck = True
-MsgBox "WOOO!"
 Exit Function
 
 TEST:
@@ -248,3 +240,4 @@ Else
 End If
  
 End Function
+

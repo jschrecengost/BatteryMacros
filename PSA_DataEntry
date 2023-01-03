@@ -35,6 +35,7 @@ If sampleName = "" Then
 MsgBox "Enter Sample Name!"
 Exit Sub
 End If
+sampleName = "'" + sampleName + "'"
 
 If (validateString(sampleLetter) = True) Then
 sampleLetter = "'" + sampleLetter + "'"

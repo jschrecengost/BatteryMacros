@@ -252,8 +252,50 @@ End If
  
 End Function
 
-Private Sub TextBox14_Change()
+Private Sub CommandButton2_Click()
+
+'Worksheets("Viscosity Entry").Activate
+'Sheets("Data Entry").Select
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+
+
+Set con = New ADODB.Connection
+
+con.Open "Driver={MySQL ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Database=battery; User=battery;Password=3point14;"
+Dim mysql As String
+mysql = "SELECT sample_name FROM analysis_viscosity order by sample_name desc limit 1"
+Set rs = New ADODB.Recordset
+'Set rs = con.Open("SELECT sample_name FROM analysis_particle_sizing order by desc limit 1")
+rs.Open mysql, con, adOpenStatic
+'ActiveSheet.Cells("D10").Value = "hi"
+'Range("N2").Value = "2023 - 30"
+
+'----------------------------------------
+TextBox01.Enabled = True
+
+Dim splitString As String
+splitString = Split(rs(0), "PS")(1)
+Dim currentMaxSampleNumber As Integer
+currentMaxSampleNumber = CInt(splitString)
+currentMaxSampleNumber = currentMaxSampleNumber + 1
+TextBox01.Value = "PS" + CStr(currentMaxSampleNumber)
+
+TextBox01.Enabled = False
+'----------------------------------------
+rs.Close
+con.Close
+
 
 End Sub
 
+ 
+ Private Sub CommandButton3_Click()
+Dim tbx As OLEObject
+For Each tbx In ActiveSheet.OLEObjects
+If TypeName(tbx.Object) = "TextBox" Then
+tbx.Object.Text = ""
+End If
+Next
+End Sub
 

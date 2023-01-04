@@ -22,14 +22,14 @@ Dim meaurementOperator As String
 measurementOperator = TextBox08.Text
 Dim notebookNumber As String
 notebookNumber = TextBox09.Text
-Dim notes As String
-notes = TextBox10.Text
 Dim dx10 As String
-dx10 = TextBox11.Text
+dx10 = TextBox10.Text
 Dim dx50 As String
-dx50 = TextBox12.Text
+dx50 = TextBox11.Text
 Dim dx90 As String
-dx90 = TextBox13.Text
+dx90 = TextBox12.Text
+Dim notes As String
+notes = TextBox13.Text
 
 If sampleName = "" Then
 MsgBox "Enter Sample Name!"
@@ -70,8 +70,6 @@ End If
 
 notebookNumber = "'" + notebookNumber + "'"
 
-notes = "'" + notes + "'"
-
 If (validateNumerically(dx10) = False) And dx10 <> "" Then
 dx10 = "'" + dx10 + "'"
 Else
@@ -93,6 +91,8 @@ MsgBox "Error with Dx90!"
 Exit Sub
 End If
 
+notes = "'" + notes + "'"
+
 Dim Sql As String
 Sql = ""
 
@@ -108,17 +108,17 @@ con.Open "Driver={MySQL ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databa
 Sql = "insert into battery.analysis_particle_sizing"
 
 Sql = Sql + "(sample_name,sample_letter,sample_type,description,experimentID,filename,"
-Sql = Sql + "measurement_date,measurement_operator,notebook_number,notes,Dx10,Dx50,Dx90)"
+Sql = Sql + "measurement_date,measurement_operator,notebook_number,Dx10,Dx50,Dx90,notes)"
 Sql = Sql + " values(" & sampleName & "," & sampleLetter & "," & sampletype
 Sql = Sql + "," & description & "," & experimentID & "," & filename
 Sql = Sql + "," & measurementDate & "," & measurementOperator & "," & notebookNumber
-Sql = Sql + "," & notes & "," & dx10 & "," & dx50
-Sql = Sql + "," & dx90 & ");"
+Sql = Sql + "," & dx10 & "," & dx50 & "," & dx10
+Sql = Sql + "," & notes & ");"
+
 
 'MsgBox Sql
 'Above line displays a messagebox with the current value of the variable Sql
-
-'con.Execute Sql
+con.Execute Sql
 con.Close
 MsgBox "Done!"
 
@@ -241,3 +241,76 @@ End If
  
 End Function
 
+Private Sub CommandButton2_Click()
+
+Worksheets("Particle Size Entry").Activate
+'Sheets("Data Entry").Select
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+
+
+Set con = New ADODB.Connection
+
+con.Open "Driver={MySQL ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Database=battery; User=battery;Password=3point14;"
+Dim mysql As String
+mysql = "SELECT sample_name FROM analysis_particle_sizing order by sample_name desc limit 1"
+Set rs = New ADODB.Recordset
+'Set rs = con.Open("SELECT sample_name FROM analysis_particle_sizing order by desc limit 1")
+rs.Open mysql, con, adOpenStatic
+'ActiveSheet.Cells("D10").Value = "hi"
+'Range("N2").Value = "2023 - 30"
+
+'----------------------------------------
+TextBox01.Enabled = True
+
+Dim splitString As String
+splitString = Split(rs(0), "PS")(1)
+Dim currentMaxSampleNumber As Integer
+currentMaxSampleNumber = CInt(splitString)
+currentMaxSampleNumber = currentMaxSampleNumber + 1
+TextBox01.Value = "PS" + CStr(currentMaxSampleNumber)
+
+TextBox01.Enabled = False
+'----------------------------------------
+rs.Close
+con.Close
+
+
+
+
+'sqlString = "select sample_name from analysis_particle_sizing order by desc"
+'Set rs = New ADODB.Recordset
+'rs.Open sqlString
+'con, adOpenStatic, adLockOptimistic
+'ActiveSheet.TextBox01.CopyFromRecordset rs
+
+
+'Select "sample_name FROM analysis_particle_sizing"
+'insert into TextBox01.text values analysis_particle_sizing(sample_name)
+
+'Sql = "insert into TextBox01 (TextBox01) values(sample_name);"
+'con.Execute Sql
+'con.Close
+'MsgBox "Done!"
+
+'Dim rng As Range
+'Set rng = Application.Range("TEST")
+'Dim row As Range
+'For Each row In rng.Rows
+'    Sql = "insert into test (test) values('" & row.Cells(1).Value & "');"
+'    con.Execute Sql
+
+'Next row
+'con.Close
+'MsgBox "Done!"
+
+End Sub
+
+  Private Sub CommandButton3_Click()
+Dim tbx As OLEObject
+For Each tbx In ActiveSheet.OLEObjects
+If TypeName(tbx.Object) = "TextBox" Then
+tbx.Object.Text = ""
+End If
+Next
+End Sub

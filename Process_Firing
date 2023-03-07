@@ -1,0 +1,187 @@
+Private Sub process_firing_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox01.Text
+Dim firingID As String
+firingID = TextBox02.Text
+Dim precursorID As String
+precursorID = TextBox03.Text
+Dim experimentID As String
+experimentID = TextBox04.Text
+Dim furnaceID As String
+furnaceID = TextBox05.Text
+Dim tubeID As String
+tubeID = TextBox06.Text
+Dim programID As String
+programID = TextBox07.Text
+Dim description As String
+description = TextBox08.Text
+Dim batchSize As String
+batchSize = TextBox09.Text
+Dim materialType As String
+materialType = TextBox10.Text
+Dim argon As String
+argon = TextBox11.Text
+Dim argonFlowRate As String
+argonFlowRate = TextBox12.Text
+Dim argonPressure As String
+argonPressure = TextBox13.Text
+Dim plugA As String
+plugA = TextBox14.Text
+Dim plugB As String
+plugB = TextBox15.Text
+Dim materialA As String
+materialA = TextBox16.Text
+Dim materialB As String
+materialB = TextBox17.Text
+Dim initialRotations As String
+initialRotations = TextBox18.Text
+Dim processDate As String
+processDate = TextBox19.Text
+Dim processOperator As String
+processOperator = TextBox20.Text
+Dim zone1Thermo As String
+zone1Thermo = TextBox21.Text
+Dim zone1Program As String
+zone1Program = TextBox22.Text
+Dim zone2Thermo As String
+zone2Thermo = TextBox23.Text
+Dim zone2Program As String
+zone2Program = TextBox24.Text
+Dim zone3Thermo As String
+zone3Thermo = TextBox25.Text
+Dim zone3Program As String
+zone3Program = TextBox26.Text
+Dim centerThermo As String
+centerThermo = TextBox27.Text
+Dim centerProgram As String
+centerProgram = TextBox28.Text
+Dim initialArgon As String
+initialArgon = TextBox29.Text
+Dim argonNum As String
+argonNum = TextBox30.Text
+Dim argonDrying As String
+argonDrying = TextBox31.Text
+Dim argonDryingTemp As String
+argonDryingTemp = TextBox32.Text
+Dim recoveredAmount As String
+recoveredAmount = TextBox33.Text
+Dim category As String
+category = TextBox34.Text
+Dim notes As String
+notes = TextBox35.Text
+
+
+recordNumber = "'" + recordNumber + "'"
+
+firingID = "'" + firingID + "'"
+
+precursorID = "'" + precursorID + "'"
+
+experimentID = "'" + experimentID + "'"
+
+furnaceID = "'" + furnaceID + "'"
+
+tubeID = "'" + tubeID + "'"
+
+programID = "'" + programID + "'"
+
+description = "'" + description + "'"
+
+batchSize = "'" + batchSize + "'"
+
+materialType = "'" + materialType + "'"
+
+argon = "'" + argon + "'"
+
+argonFlowRate = "'" + argonFlowRate + "'"
+
+argonPressure = "'" + argonPressure + "'"
+
+plugA = "'" + plugA + "'"
+
+plugB = "'" + plugB + "'"
+
+materialA = "'" + materialA + "'"
+
+materialB = "'" + materialB + "'"
+
+initialRotations = "'" + initialRotations + "'"
+
+processDate = "'" + processDate + "'"
+
+processOperator = "'" + processOperator + "'"
+
+zone1Thermo = "'" + zone1Thermo + "'"
+
+zone1Program = "'" + zone1Program + "'"
+
+zone2Thermo = "'" + zone2Thermo + "'"
+
+zone2Program = "'" + zone2Program + "'"
+
+zone3Thermo = "'" + zone3Thermo + "'"
+
+zone3Program = "'" + zone3Program + "'"
+
+centerThermo = "'" + centerThermo + "'"
+
+centerProgram = "'" + centerProgram + "'"
+
+initialArgon = "'" + initialArgon + "'"
+
+argonNum = "'" + argonNum + "'"
+
+argonDrying = "'" + argonDrying + "'"
+
+argonDryingTemp = "'" + argonDryingTemp + "'"
+
+recoveredAmount = "'" + recoveredAmount + "'"
+
+category = "'" + category + "'"
+
+notes = "'" + notes + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
+
+
+Sql = "insert into battery.process_firing"
+
+Sql = Sql + "(record_number,firingID,precursorID,experimentID,furnaceID,tubeID,"
+Sql = Sql + "programID,description,batch_size,material_type,argon,argon_flow_rate,"
+Sql = Sql + "argon_pressure_setting,plug_position_A,plug_position_B,material_position_A,material_position_B,initial_rotations,"
+Sql = Sql + "process_date, process_operator, zone1_thermocouple_filename,zone1_program_filename,zone2_thermocouple_filename,zone2_program_filename,"
+Sql = Sql + "zone3_thermocouple_filename, zone3_program_filename, center_thermocouple_filename,center_program_filename,initial_argon_cluster_pressure,"
+Sql = Sql + "argon_num_tanks_open, argon_drying, argon_drying_time, argon_drying_temperature, recovered_amount, notes)"
+Sql = Sql + " values(" & recordNumber & "," & firingID & "," & precursorID
+Sql = Sql + "," & experimentID & "," & furnaceID & "," & tubeID
+Sql = Sql + "," & programID & "," & description & "," & batchSize
+Sql = Sql + "," & materialType & "," & argon & "," & argonFlowRate
+Sql = Sql + "," & argonPressure & "," & plugA & "," & plugB
+Sql = Sql + "," & materialA & "," & materialB & "," & initialRotations
+Sql = Sql + "," & processDate & "," & processOperator & "," & zone1Thermo
+Sql = Sql + "," & zone1Program & "," & zone2Thermo & "," & zone2Program
+Sql = Sql + "," & zone3Thermo & "," & zone3Program & "," & centerThermo
+Sql = Sql + "," & centerProgram & "," & initialArgon & "," & argonNum
+Sql = Sql + "," & argonDrying & "," & argonDryingTemp & "," & recoveredAmount
+Sql = Sql + "," & category & "," & notes & ");"
+
+
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub

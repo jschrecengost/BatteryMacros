@@ -1,0 +1,228 @@
+Private Sub material_superP_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox01.Text
+Dim superPID As String
+superPID = TextBox02.Text
+Dim sampleName As String
+sampleName = TextBox03.Text
+Dim notebookNumber As String
+notebookNumber = TextBox04.Text
+Dim lotNumber As String
+lotNumber = TextBox05.Text
+Dim preparationDate As String
+preparationDate = TextBox06.Text
+Dim preparationOperator As String
+preparationOperator = TextBox07.Text
+Dim modificationProcess As String
+modificationProcess = TextBox08.Text
+Dim superPInitialAmount As String
+superPInitialAmount = TextBox09.Text
+Dim superPRecovered As String
+superPRecovered = TextBox10.Text
+Dim superPInventory As String
+superPInventory = TextBox11.Text
+Dim diWater As String
+diWater = TextBox12.Text
+Dim wettingAgent As String
+wettingAgent = TextBox13.Text
+Dim wettingAgentAmount As String
+wettingAgentAmount = TextBox14.Text
+Dim wettingAgentConcentration As String
+wettingAgentConcentration = TextBox15.Text
+Dim machineName As String
+machineName = TextBox16.Text
+Dim machinetype As String
+machinetype = TextBox17.Text
+Dim jarType As String
+jarType = TextBox18.Text
+Dim jarSize As String
+jarSize = TextBox19.Text
+Dim numberJars As String
+numberJars = TextBox20.Text
+Dim beadType As String
+beadType = TextBox21.Text
+Dim beadSize As String
+beadSize = TextBox22.Text
+Dim beadAmount As String
+beadAmount = TextBox23.Text
+Dim rpm As String
+rpm = TextBox24.Text
+Dim millingTime As String
+millingTime = TextBox25.Text
+Dim dryingTime As String
+dryingTime = TextBox26.Text
+Dim dryingTemp As String
+dryingTemp = TextBox27.Text
+Dim dryingLocation As String
+dryingLocation = TextBox28.Text
+Dim dryingComplete As String
+dryingComplete = TextBox29.Text
+Dim initialDx10 As String
+initialDx10 = TextBox30.Text
+Dim initialDx50 As String
+initialDx50 = TextBox31.Text
+Dim initialDx90 As String
+initialDx90 = TextBox32.Text
+Dim finalDx10 As String
+finalDx10 = TextBox33.Text
+Dim finalDx50 As String
+finalDx50 = TextBox34.Text
+Dim finalDx90 As String
+finalDx90 = TextBox35.Text
+Dim targetDx10 As String
+targetDx10 = TextBox36.Text
+Dim targetDx50 As String
+targetDx50 = TextBox37.Text
+Dim targetDx90 As String
+targetDx90 = TextBox38.Text
+Dim malvernFilename As String
+malvernFilename = TextBox39.Text
+Dim malvernProcessType As String
+malvernProcessType = TextBox40.Text
+Dim measurementDate As String
+measurementDate = TextBox41.Text
+Dim measurementOperator As String
+measurementOperator = TextBox42.Text
+Dim physicalLocation As String
+physicalLocation = TextBox43.Text
+Dim notes As String
+notes = TextBox44.Text
+
+
+recordNumber = "'" + recordNumber + "'"
+
+superPID = "'" + superPID + "'"
+
+sampleName = "'" + sampleName + "'"
+
+notebookNumber = "'" + notebookNumber + "'"
+
+lotNumber = "'" + lotNumber + "'"
+
+preparationDate = "'" + preparationDate + "'"
+
+preparationOperator = "'" + preparationOperator + "'"
+
+modificationProcess = "'" + modificationProcess + "'"
+
+superPInitialAmount = "'" + superPInitialAmount + "'"
+
+superPRecovered = "'" + superPRecovered + "'"
+
+superPInventory = "'" + superPInventory + "'"
+
+diWater = "'" + diWater + "'"
+
+wettingAgent = "'" + wettingAgent + "'"
+
+wettingAgentAmount = "'" + wettingAgentAmount + "'"
+
+wettingAgentConcentration = "'" + wettingAgentConcentration + "'"
+
+machineName = "'" + machineName + "'"
+
+machinetype = "'" + machinetype + "'"
+
+jarType = "'" + jarType + "'"
+
+jarSize = "'" + jarSize + "'"
+
+numberJars = "'" + numberJars + "'"
+
+beadType = "'" + beadType + "'"
+
+beadSize = "'" + beadSize + "'"
+
+beadAmount = "'" + beadAmount + "'"
+
+rpm = "'" + rpm + "'"
+
+millingTime = "'" + millingTime + "'"
+
+dryingTime = "'" + dryingTime + "'"
+
+dryingTemp = "'" + dryingTemp + "'"
+
+dryingLocation = "'" + dryingLocation + "'"
+
+dryingComplete = "'" + dryingComplete + "'"
+
+initialDx10 = "'" + initialDx10 + "'"
+
+initialDx50 = "'" + initialDx50 + "'"
+
+initialDx90 = "'" + initialDx90 + "'"
+
+finalDx10 = "'" + finalDx10 + "'"
+
+finalDx50 = "'" + finalDx50 + "'"
+
+finalDx90 = "'" + finalDx90 + "'"
+
+targetDx10 = "'" + targetDx10 + "'"
+
+targetDx90 = "'" + targetDx90 + "'"
+
+targetDx50 = "'" + targetDx50 + "'"
+
+malvernFilename = "'" + malvernFilename + "'"
+
+malvernProcessType = "'" + malvernProcessType + "'"
+
+measurementDate = "'" + measurementDate + "'"
+
+measurementOperator = "'" + measurementOperator + "'"
+
+physicalLocation = "'" + physicalLocation + "'"
+
+notes = "'" + notes + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
+
+
+Sql = "insert into battery.material_superp"
+
+Sql = Sql + "(record_number,superP_ID,sample_name,notebook_number,lot_number,preparation_date,"
+Sql = Sql + "preparation_operator,modification_process,superP_initial_amount,superP_recovered_amount,superP_inventory_amount_remaining,di_water_amount,"
+Sql = Sql + "wetting_agent,wetting_agent_amount,wetting_agent_concentration,machine_name,machine_type,jar_type,"
+Sql = Sql + "jar_size, number_jars_used, bead_type,bead_size,bead_amount,rpm,"
+Sql = Sql + "milling_time, drying_time, drying_temperature,drying_location,drying_complete,"
+Sql = Sql + "initial_Dx10, initial_Dx50, initial_Dx90, final_Dx10, final_Dx50, final_Dx90,"
+Sql = Sql + "target_Dx10,target_Dx50,target_Dx90,malvern_filename,malvern_process_type,measurement_date,measurement_operator,"
+Sql = Sql + "physical_location, notes)"
+Sql = Sql + " values(" & recordNumber & "," & superPID & "," & sampleName
+Sql = Sql + "," & notebookNumber & "," & lotNumber & "," & preparationDate & "," & preparationOperator
+Sql = Sql + "," & modificationProcess & "," & superPInitialAmount & "," & superPRecovered
+Sql = Sql + "," & superPInventory & "," & diWater & "," & wettingAgent
+Sql = Sql + "," & wettingAgentAmount & "," & wettingAgentConcentration & "," & machineName
+Sql = Sql + "," & machinetype & "," & jarType & "," & jarSize
+Sql = Sql + "," & numberJars & "," & beadType & "," & beadSize
+Sql = Sql + "," & beadAmount & "," & rpm & "," & millingTime
+Sql = Sql + "," & dryingTime & "," & dryingTemp & "," & dryingLocation
+Sql = Sql + "," & dryingComplete & "," & initialDx10 & "," & initialDx50
+Sql = Sql + "," & initialDx90 & "," & finalDx10 & "," & finalDx50
+Sql = Sql + "," & finalDx90 & "," & targetDx10 & "," & targetDx50
+Sql = Sql + "," & targetDx90 & "," & malvernFilename
+Sql = Sql + "," & malvernProcessType & "," & measurementDate & "," & measurementOperator
+Sql = Sql + "," & physicalLocation & "," & notes & ");"
+
+
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub

@@ -187,7 +187,6 @@ Dim Sql As String
 Sql = ""
 
 
-con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
 
 
 Sql = "insert into battery.material_superp"

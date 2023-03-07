@@ -1,0 +1,95 @@
+Private Sub chemical_database_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim rowID As String
+rowID = TextBox01.Text
+Dim chemicalName As String
+chemicalName = TextBox02.Text
+Dim chemicalFormula As String
+chemicalFormula = TextBox03.Text
+Dim quantity As String
+quantity = TextBox04.Text
+Dim uom As String
+uom = TextBox05.Text
+Dim currentQuantity As String
+currentQuantity = TextBox06.Text
+Dim shortName As String
+shortName = TextBox07.Text
+Dim casNumber As String
+casNumber = TextBox08.Text
+Dim chemicalType As String
+chemicalType = TextBox09.Text
+Dim building As String
+building = TextBox10.Text
+Dim department As String
+department = TextBox11.Text
+Dim location As String
+location = TextBox12.Text
+Dim dateAdded As String
+dateAdded = TextBox13.Text
+Dim notes As String
+notes = TextBox14.Text
+
+
+rowID = "'" + rowID + "'"
+
+chemicalName = "'" + chemicalName + "'"
+
+chemicalFormula = "'" + chemicalFormula + "'"
+
+quantity = "'" + quantity + "'"
+
+uom = "'" + uom + "'"
+
+currentQuantity = "'" + currentQuantity + "'"
+
+shortName = "'" + shortName + "'"
+
+casNumber = "'" + casNumber + "'"
+
+chemicalType = "'" + chemicalType + "'"
+
+building = "'" + building + "'"
+
+department = "'" + department + "'"
+
+location = "'" + location + "'"
+
+dateAdded = "'" + dateAdded + "'"
+
+notes = "'" + notes + "'"
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
+
+
+Sql = "insert into battery.chemical_list_database"
+
+Sql = Sql + "(row_id,chemical_name,chemical_formula,qty,uom,current_quantity,"
+Sql = Sql + "short_name,cas_number,chemical_type,building,department,location,date_added,notes)"
+Sql = Sql + " values(" & rowID & "," & chemicalName & "," & chemicalFormula
+Sql = Sql + "," & quantity & "," & uom & "," & currentQuantity
+Sql = Sql + "," & shortName & "," & casNumber & "," & chemicalType
+Sql = Sql + "," & building & "," & department & "," & location
+Sql = Sql + "," & dateAdded & "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub

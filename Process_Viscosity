@@ -1,0 +1,53 @@
+Dim viscosityProcessID As String
+viscosityProcessID = TextBox01.Text
+Dim description As String
+description = TextBox02.Text
+Dim rpm1 As String
+rpm1 = TextBox03.Text
+Dim rpm2 As String
+rpm2 = TextBox04.Text
+Dim rpm3 As String
+rpm3 = TextBox05.Text
+Dim rpm4 As String
+rpm4 = TextBox06.Text
+Dim rpm5 As String
+rpm5 = TextBox07.Text
+
+
+viscosityProcessID = "'" + viscosityProcessID + "'"
+
+description = "'" + description + "'"
+
+rpm1 = "'" + rpm1 + "'"
+
+rpm2 = "'" + rpm2 + "'"
+
+rpm3 = "'" + rpm3 + "'"
+
+rpm4 = "'" + rpm4 + "'"
+
+rpm5 = "'" + rpm5 + "'"
+
+notes = "'" + notes + "'"
+
+Dim Sql As String
+Sql = ""
+
+
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
+
+
+Sql = "insert into battery.process_viscosity"
+
+Sql = Sql + "(viscosity_processID,description,rpm1,rpm2,rpm3,rpm4,rpm5,notes)"
+Sql = Sql + " values(" & viscosityProcessID & "," & description & "," & rpm1 & "," & rpm2
+Sql = Sql + "," & rpm3 & "," & rpm4 & "," & rpm5
+Sql = Sql + "," & notes & ");"
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub

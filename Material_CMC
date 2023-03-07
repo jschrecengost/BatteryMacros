@@ -1,0 +1,99 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim rowID As String
+rowID = TextBox01.Text
+Dim cmcID As String
+cmcID = TextBox02.Text
+Dim description As String
+description = TextBox03.Text
+Dim entryDate As String
+entryDate = TextBox04.Text
+Dim totalMixingTime As String
+totalMixingTime = TextBox05.Text
+Dim mixingTimeMIN As String
+mixingTimeMIN = TextBox06.Text
+Dim targetWater As String
+targetWater = TextBox07.Text
+Dim targetCMCPowder As String
+targetCMCPowder = TextBox08.Text
+Dim targetTotalMass As String
+targetTotalMass = TextBox09.Text
+Dim percent As String
+percent = TextBox10.Text
+Dim actualWater As String
+actualWater = TextBox11.Text
+Dim actualCMCPowder As String
+actualCMCPowder = TextBox12.Text
+Dim actualTotalMass As String
+actualTotalMass = TextBox13.Text
+Dim reportImage As String
+reportImage = TextBox14.Text
+Dim notes As String
+notes = TextBox15.Text
+
+
+cmcID = "'" + cmcID + "'"
+
+description = "'" + description + "'"
+
+entryDate = "'" + entryDate + "'"
+
+totalMixingTime = "'" + totalMixingTime + "'"
+
+mixingTimeMIN = "'" + mixingTimeMIN + "'"
+
+targetWater = "'" + targetWater + "'"
+
+targetCMCPowder = "'" + targetCMCPowder + "'"
+
+targetTotalMass = "'" + targetTotalMass + "'"
+
+percent = "'" + percent + "'"
+
+actualWater = "'" + actualWater + "'"
+
+actualCMCPowder = "'" + actualCMCPowder + "'"
+
+actualTotalMass = "'" + actualTotalMass + "'"
+
+reportImage = "'" + reportImage + "'"
+
+notes = "'" + notes + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
+
+
+Sql = "insert into battery.material_cmc"
+
+Sql = Sql + "(row_ID,cmcID,description,entry_datetime,mixing_time_TIME,mixing_time_MINUTE,target_water,"
+Sql = Sql + "target_cmc_powder,target_total_mass,percent,actual_water,actual_cmc_powder,actual_total_mass,"
+Sql = Sql + "reportImage,notes)"
+Sql = Sql + " values(" & rowID & "," & cmcID & "," & description
+Sql = Sql + "," & entryDate & "," & totalMixingTime & ", " & mixingTimeMIN & "," & targetWater & "," & targetCMCPowder
+Sql = Sql + "," & targetTotalMass & "," & percent & "," & actualWater
+Sql = Sql + "," & actualCMCPowder & "," & actualTotalMass & "," & reportImage
+Sql = Sql + "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub

@@ -1,0 +1,109 @@
+Private Sub process_precursor_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox01.Text
+Dim precursorID As String
+precursorID = TextBox02.Text
+Dim carbonID As String
+carbonID = TextBox03.Text
+Dim formulationID As String
+formulationID = TextBox04.Text
+Dim millingID As String
+millingID = TextBox05.Text
+Dim particleSizeID As String
+particleSizeID = TextBox06.Text
+Dim tgaID As String
+tgaID = TextBox07.Text
+Dim description As String
+description = TextBox08.Text
+Dim batchSize As String
+batchSize = TextBox09.Text
+Dim activeMaterialRatio As String
+activeMaterialRatio = TextBox10.Text
+Dim activeMaterial As String
+activeMaterial = TextBox11.Text
+Dim category As String
+category = TextBox12.Text
+Dim processDate As String
+processDate = TextBox13.Text
+Dim processOperator As String
+processOperator = TextBox15.Text
+Dim recoveredAmount As String
+recoveredAmount = TextBox15.Text
+Dim notebookNumber As String
+notebookNumber = TextBox16.Text
+Dim notes As String
+notes = TextBox17.Text
+
+recordNumber = "'" + recordNumber + "'"
+
+precursorID = "'" + precursorID + "'"
+
+carbonID = "'" + carbonID + "'"
+
+formulationID = "'" + formulationID + "'"
+
+millingID = "'" + millingID + "'"
+
+particleSizeID = "'" + particleSizeID + "'"
+
+tgaID = "'" + tgaID + "'"
+
+description = "'" + description + "'"
+
+batchSize = "'" + batchSize + "'"
+
+activeMaterialRatio = "'" + activeMaterialRatio + "'"
+
+activeMaterial = "'" + activeMaterial + "'"
+
+category = "'" + category + "'"
+
+processDate = "'" + processDate + "'"
+
+processOperator = "'" + processOperator + "'"
+
+recoveredAmount = "'" + recoveredAmount + "'"
+
+notebookNumber = "'" + notebookNumber + "'"
+
+notes = "'" + notes + "'"
+
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
+
+
+Sql = "insert into battery.process_precursor"
+
+Sql = Sql + "(record_number,precursorID,carbonID,formulationID,millingID,particleSizeID,"
+Sql = Sql + "tgaID,description,batch_size,active_material_ratio,active_material,category,process_date,process_operator,"
+Sql = Sql + "recovered_amount,notebook_number,notes)"
+Sql = Sql + " values(" & recordNumber & "," & precursorID & "," & carbonID
+Sql = Sql + "," & formulationID & "," & millingID & "," & particleSizeID
+Sql = Sql + "," & tgaID & "," & description & "," & batchSize
+Sql = Sql + "," & activeMaterialRatio & "," & activeMaterial & "," & category
+Sql = Sql + "," & processDate & "," & processOperator & "," & recoveredAmount & "," & notebookNumber & "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub

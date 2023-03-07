@@ -1,0 +1,81 @@
+Private Sub milling_bead_size_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim beadSizeID As String
+beadSizeID = TextBox01.Text
+Dim material As String
+material = TextBox02.Text
+Dim size As String
+size = TextBox03.Text
+Dim geometry As String
+geometry = TextBox04.Text
+Dim vendor As String
+vendor = TextBox05.Text
+Dim serialNumber As String
+serialNumber = TextBox06.Text
+Dim inventory As String
+inventory = TextBox07.Text
+Dim singleMass As String
+singleMass = TextBox08.Text
+Dim productNumber As String
+productNumber = TextBox09.Text
+Dim productLink As String
+productLink = TextBox10.Text
+
+
+beadSizeID = "'" + beadSizeID + "'"
+
+material = "'" + material + "'"
+
+size = "'" + size + "'"
+
+geometry = "'" + geometry + "'"
+
+vendor = "'" + vendor + "'"
+
+serialNumber = "'" + serialNumber + "'"
+
+inventory = "'" + inventory + "'"
+
+singleMass = "'" + singleMass + "'"
+
+productNumber = "'" + productNumber + "'"
+
+productLink = "'" + productLink + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+
+
+Sql = "insert into battery.milling_bead_size"
+
+Sql = Sql + "(beadSizeID,material,size,geometry,vendor,serialNumber,inventory,"
+Sql = Sql + "single_mass,product_number,product_link)"
+Sql = Sql + " values(" & beadSizeID & "," & material & "," & size
+Sql = Sql + "," & geometry & "," & vendor & ", " & serialNumber & "," & inventory & "," & singleMass
+Sql = Sql + "," & productNumber & "," & productLink & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+
+
+

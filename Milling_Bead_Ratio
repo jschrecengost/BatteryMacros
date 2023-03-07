@@ -1,0 +1,106 @@
+Private Sub milling_bead_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim beadRatioID As String
+beadRatioID = TextBox01.Text
+Dim ratioDescription As String
+ratioDescription = TextBox02.Text
+Dim beadSize1 As String
+beadSize1 = TextBox03.Text
+Dim beadSize1Mass As String
+beadSize1Mass = TextBox04.Text
+Dim beadSize1Quantity As String
+beadSize1Quantity = TextBox05.Text
+Dim beadSize2 As String
+beadSize2 = TextBox06.Text
+Dim beadSize2Mass As String
+beadSize2Mass = TextBox07.Text
+Dim beadSize2Quantity As String
+beadSize2Quantity = TextBox08.Text
+Dim beadSize3 As String
+beadSize3 = TextBox09.Text
+Dim beadSize3Mass As String
+beadSize3Mass = TextBox10.Text
+Dim beadSize3Quantity As String
+beadSize3Quantity = TextBox11.Text
+Dim beadSize4 As String
+beadSize4 = TextBox12.Text
+Dim beadSize4Mass As String
+beadSize4Mass = TextBox13.Text
+Dim beadSize4Quantity As String
+beadSize4Quantity = TextBox14.Text
+Dim beadSize5 As String
+beadSize5 = TextBox15.Text
+Dim beadSize5Mass As String
+beadSize5Mass = TextBox16.Text
+Dim beadSize5Quantity As String
+beadSize5Quantity = TextBox17.Text
+
+
+
+beadRatioID = "'" + beadRatioID + "'"
+
+ratioDescription = "'" + ratioDescription + "'"
+
+beadSize1 = "'" + beadSize1 + "'"
+
+beadSize1Mass = "'" + beadSize1Mass + "'"
+
+beadSize1Quantity = "'" + beadSize1Quantity + "'"
+
+beadSize2 = "'" + beadSize2 + "'"
+
+beadSize2Mass = "'" + beadSize2Mass + "'"
+
+beadSize2Quantity = "'" + beadSize2Quantity + "'"
+
+beadSize3 = "'" + beadSize3 + "'"
+
+beadSize3Mass = "'" + beadSize3Mass + "'"
+
+beadSize3Quantity = "'" + beadSize3Quantity + "'"
+
+beadSize4 = "'" + beadSize4 + "'"
+
+beadSize4Mass = "'" + beadSize4Mass + "'"
+
+beadSize5 = "'" + beadSize5 + "'"
+
+beadSize5Mass = "'" + beadSize5Mass + "'"
+
+beadSize5Quantity = "'" + beadSize5Quantity + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
+
+
+Sql = "insert into battery.milling_bead_ratios"
+
+Sql = Sql + "(beadRatioID,ratioDescription,beadSize1_ID,beadSize1_mass,beadSize1_quantity,beadSize2_ID,"
+Sql = Sql + "beadSize2_mass,beadSize2_quantity,beadSize3_ID,beadSize3_mass,beadSize3_quantity,beadSize4_ID,beadSize4_mass,"
+Sql = Sql + "beadSize4_quantity,beadSize5_ID,beadSize5_mass,beadSize5_quantity )"
+Sql = Sql + " values(" & beadRatioID & "," & ratioDescription & "," & beadSize1
+Sql = Sql + "," & beadSize1Mass & "," & beadSize1Quantity & ", " & beadSize2 & "," & beadSize2Mass & "," & beadSize2Quantity
+Sql = Sql + "," & beadSize3 & "," & beadSize3Mass & "," & beadSize3Quantity
+Sql = Sql + "," & beadSize4 & "," & beadSize4Mass & "," & beadSize4Quantity
+Sql = Sql + "," & beadSize5 & "," & beadSize5Mass & "," & beadSize5Quantity & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+
+

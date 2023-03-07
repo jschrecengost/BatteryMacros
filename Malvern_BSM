@@ -1,0 +1,70 @@
+Private Sub malvern_bsm_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox01.Text
+Dim sampleName As String
+sampleName = TextBox02.Text
+Dim Dx10 As String
+Dx10 = TextBox03.Text
+Dim Dx50 As String
+Dx50 = TextBox04.Text
+Dim Dx90 As String
+Dx90 = TextBox05.Text
+Dim operator As String
+operator = TextBox06.Text
+Dim measurementDate As String
+measurementDate = TextBox07.Text
+
+
+
+recordNumber = "'" + recordNumber + "'"
+
+sampleName = "'" + sampleName + "'"
+
+Dx10 = "'" + Dx10 + "'"
+
+Dx50 = "'" + Dx50 + "'"
+
+Dx90 = "'" + Dx90 + "'"
+
+operator = "'" + operator + "'"
+
+measurementDate = "'" + measurementDate + "'"
+
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+
+
+Sql = "insert into battery.malvern_bsm"
+
+Sql = Sql + "(record_number,sample_name,dx10,dx50,dx90,operator,measurement_date_time)"
+Sql = Sql + " values(" & recordNumber & "," & sampleName & "," & Dx10
+Sql = Sql + "," & Dx50 & "," & Dx90 & ", " & operator & "," & measurementDate & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+
+
+
+

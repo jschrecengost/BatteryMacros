@@ -1,0 +1,97 @@
+Private Sub firing_tubes_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox01.Text
+Dim tubeID As String
+tubeID = TextBox02.Text
+Dim tubeName As String
+tubeName = TextBox03.Text
+Dim tubeMaterial As String
+tubeMaterial = TextBox04.Text
+Dim tubeInnerD As String
+tubeInnerD = TextBox05.Text
+Dim tubeOuterD As String
+tubeOuterD = TextBox06.Text
+Dim tubeLength As String
+tubeLength = TextBox07.Text
+Dim status As String
+status = TextBox08.Text
+Dim condition As String
+condition = TextBox09.Text
+Dim firingCyclesCompleted As String
+firingCyclesCompleted = TextBox10.Text
+Dim firstUseDate As String
+firstUseDate = TextBox11.Text
+Dim vendor As String
+vendor = TextBox12.Text
+Dim purchaseDate As String
+purchaseDate = TextBox13.Text
+Dim notes As String
+notes = TextBox14.Text
+
+
+recordNumber = "'" + recordNumber + "'"
+
+tubeID = "'" + tubeID + "'"
+
+tubeName = "'" + tubeName + "'"
+
+tubeMaterial = "'" + tubeMaterial + "'"
+
+tubeInnerD = "'" + tubeInnerD + "'"
+
+tubeOuterD = "'" + tubeOuterD + "'"
+
+tubeLength = "'" + tubeLength + "'"
+
+status = "'" + status + "'"
+
+condition = "'" + condition + "'"
+
+firingCyclesCompleted = "'" + firingCyclesCompleted + "'"
+
+firstUseDate = "'" + firstUseDate + "'"
+
+vendor = "'" + vendor + "'"
+
+purchaseDate = "'" + purchaseDate + "'"
+
+notes = "'" + notes + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
+
+
+Sql = "insert into battery.equipment_firing_tubes"
+
+Sql = Sql + "(record_number,tubeID,tube_name,tube_material,tube_inner_diameter,tube_outer_diameter,tube_length,"
+Sql = Sql + "status,condition,firing_cycles_completed,first_use_date,vendor,purchase_date,notes)"
+Sql = Sql + " values(" & recordNumber & "," & tubeID & "," & tubeName
+Sql = Sql + "," & tubeMaterial & "," & tubeInnerD & ", " & tubeOuterD & "," & tubeLength & "," & status
+Sql = Sql + "," & condition & "," & firingCyclesCompleted & "," & firstUseDate
+Sql = Sql + "," & vendor & "," & purchaseDate & "," & notes & ");"
+
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+

@@ -1,0 +1,116 @@
+Private Sub material_carbon_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim rowID As String
+rowID = TextBox01.Text
+Dim carbonID As String
+carbonID = TextBox02.Text
+Dim material As String
+material = TextBox03.Text
+Dim materialVendor As String
+materialVendor = TextBox04.Text
+Dim vendorContact As String
+vendorContact = TextBox05.Text
+Dim lotNumber As String
+lotNumber = TextBox06.Text
+Dim preparationNotebook As String
+preparationNotebook = TextBox07.Text
+Dim activationNotebook As String
+activationNotebook = TextBox08.Text
+Dim finalAmount As String
+finalAmount = TextBox09.Text
+Dim yieldPercent As String
+yieldPercent = TextBox10.Text
+Dim washNotebook As String
+washNotebook = TextBox11.Text
+Dim washMethod As String
+washMethod = TextBox12.Text
+Dim finalPH As String
+finalPH = TextBox13.Text
+Dim conductivity As String
+conductivity = TextBox15.Text
+Dim surfaceArea As String
+surfaceArea = TextBox15.Text
+Dim poreSize As String
+poreSize = TextBox16.Text
+Dim dateMade As String
+dateMade = TextBox17.Text
+Dim operator As String
+operator = TextBox18.Text
+Dim notes As String
+notes = TextBox19.Text
+
+rowID = "'" + rowID + "'"
+
+carbonID = "'" + carbonID + "'"
+
+material = "'" + material + "'"
+
+materialVendor = "'" + materialVendor + "'"
+
+vendorContact = "'" + vendorContact + "'"
+
+lotNumber = "'" + lotNumber + "'"
+
+preparationNotebook = "'" + preparationNotebook + "'"
+
+activationNotebook = "'" + activationNotebook + "'"
+
+finalAmount = "'" + finalAmount + "'"
+
+yieldPercent = "'" + yieldPercent + "'"
+
+washNotebook = "'" + washNotebook + "'"
+
+washMethod = "'" + washMethod + "'"
+
+finalPH = "'" + finalPH + "'"
+
+conductivity = "'" + conductivity + "'"
+
+surfaceArea = "'" + surfaceArea + "'"
+
+poreSize = "'" + poreSize + "'"
+
+dateMade = "'" + dateMade + "'"
+
+operator = "'" + operator + "'"
+
+notes = "'" + notes + "'"
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
+
+
+Sql = "insert into battery.material_carbon"
+
+Sql = Sql + "(rowID,carbonID,material,materialVendor,vendorContact,lotNumber,"
+Sql = Sql + "preparationNotebookPages,activationNotebookPages,finalAmount,yieldPercent,washNotebookPages,washMethod,"
+Sql = Sql + "final_PH,conductivity,surfaceArea,poreSize,dateMade,operator,notes)"
+Sql = Sql + " values(" & rowID & "," & carbonID & "," & material
+Sql = Sql + "," & materialVendor & "," & vendorContact & "," & lotNumber & "," & preparationNotebook
+Sql = Sql + "," & activationNotebook & "," & finalAmount & "," & yieldPercent
+Sql = Sql + "," & washNotebook & "," & washMethod & "," & finalPH
+Sql = Sql + "," & conductivity & "," & surfaceArea & "," & poreSize
+Sql = Sql + "," & dateMade & "," & operator & "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub

@@ -1,0 +1,49 @@
+Private Sub chemical_manufacturer_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim rowID As String
+rowID = TextBox01.Text
+Dim manufacturerName As String
+manufacturerName = TextBox02.Text
+Dim manufacturerShortName As String
+manufacturerShortName = TextBox03.Text
+Dim linkSite As String
+linkSite = TextBox04.Text
+
+rowID = "'" + rowID + "'"
+
+manufacturerName = "'" + manufacturerName + "'"
+
+manufacturerShortName = "'" + manufacturerShortName + "'"
+
+linkSite = "'" + linkSite + "'"
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
+
+
+Sql = "insert into battery.chemical_manufacturers"
+
+Sql = Sql + "(row_id,manufacturer_name,manufacturer_short_name,link_to_site)"
+Sql = Sql + " values(" & rowID & "," & manufacturerName & "," & manufacturerShortName & "," & linkSite & ");"
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+

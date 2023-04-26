@@ -1,0 +1,204 @@
+
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox1.Text
+Dim processID As String
+processID = TextBox2.Text
+Dim batchNumber As String
+batchNumber = TextBox3.Text
+Dim lotID As String
+lotID = TextBox4.Text
+Dim supplier As String
+supplier = TextBox5.Text
+Dim partNumber As String
+partNumber = TextBox6.Text
+Dim receivedDate As String
+receivedDate = TextBox7.Text
+Dim description As String
+description = TextBox8.Text
+Dim totalWeight As String
+totalWeight = TextBox9.Text
+Dim user As String
+user = ComboBox1.Text
+
+
+
+If recordNumber = "" Then
+MsgBox "Generate Record Number!"
+Exit Sub
+End If
+recordNumber = "'" + recordNumber + "'"
+
+If processID = "" Then
+MsgBox "Input Process ID!"
+Exit Sub
+End If
+processID = "'" + processID + "'"
+
+If batchNumber = "" Then
+MsgBox "Input Batch Number!"
+Exit Sub
+End If
+batchNumber = "'" + batchNumber + "'"
+
+lotID = "'" + lotID + "'"
+
+supplier = "'" + supplier + "'"
+
+partNumber = "'" + partNumber + "'"
+
+If (dateCheck(receivedDate) = True) And receivedDate <> "" Then
+receivedDate = Format(receivedDate, "YYYY-MM-DD")
+TextBox7.Text = receivedDate
+receivedDate = "'" + receivedDate + "'"
+Else
+MsgBox "Please use YYYY-MM-DD Measurement Date Format"
+Exit Sub
+End If
+
+description = "'" + description + "'"
+
+totalWeight = "'" + totalWeight + "'"
+
+user = "'" + user + "'"
+
+
+
+Dim Sql As String
+Sql = ""
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Database=battery; User=battery; Password=3point14"
+
+Sql = "insert into battery.carbon_received"
+
+Sql = Sql + "(record_number,process_step,batch_number,lot_id,supplier,"
+Sql = Sql + "part_number,received_date,description,total_weight_received,"
+Sql = Sql + "user)"
+Sql = Sql + " values(" & recordNumber & "," & processStep & "," & batchNumber
+Sql = Sql + "," & lotID & "," & supplier & "," & partNumber
+Sql = Sql + "," & receivedDate & "," & description & "," & totalWeight
+Sql = Sql + "," & user & ");"
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+Private Sub Workbook_Open()
+With Sheet1.ComboBox1
+.AddItem "Rob"
+.AddItem "Jared"
+.AddItem "Chuck"
+.AddItem "Other"
+End With
+
+End Sub
+
+
+Private Function dateCheck(ByVal textBoxText As String) As Boolean
+
+dateCheck = False
+Dim datevalue As Date
+On Error GoTo TEST
+datevalue = CDate(textBoxText)
+
+Dim testString
+testString = Format(textBoxText, "YYYY-MM-DD")
+
+If (IsDate(textBoxText)) Then
+dateCheck = True
+Exit Function
+
+TEST:
+ MsgBox "ERROR"
+ 
+Else
+  MsgBox "Please use a valid yyyy-mm-dd date format!"
+
+End If
+ 
+End Function
+
+Private Sub refresh_Click()
+Dim tbx As OLEObject
+For Each tbx In ActiveSheet.OLEObjects
+If TypeName(tbx.Object) = "TextBox" Then
+tbx.Object.Text = ""
+End If
+Next
+End Sub
+
+Private Sub generate_Click()
+
+Worksheets("Commercial Carbon Powder").Activate
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+
+
+Set con = New ADODB.Connection
+
+
+Dim mysql As String
+mysql = "SELECT record_number FROM carbon_received order by record_number desc limit 1"
+Set rs = New ADODB.Recordset
+rs.Open mysql, con, adOpenStatic
+
+'----------------------------------------
+TextBox1.Enabled = True
+
+Dim splitString As String
+splitString = (rs(0))
+Dim currentMaxSampleNumber As Integer
+currentMaxSampleNumber = CInt(splitString)
+currentMaxSampleNumber = currentMaxSampleNumber + 1
+TextBox1.Value = CStr(currentMaxSampleNumber)
+
+TextBox1.Enabled = False
+'----------------------------------------
+rs.Close
+con.Close
+
+End Sub
+
+Private Sub TextBox9_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+
+Sub Protect_Formula()
+Cells.Select
+Selection.Locked = False
+Selection.SpecialCells(xlCellTypeFormulas, 23).Select
+Selection.Locked -True
+With Selection.Interior
+.Color = vbGreen
+End With
+Range("A1").Select
+ActiveSheet.Protect Password:="1234"
+End Sub
+
+Sub UnProtect_Formula()
+
+ActiveSheet.Unprotect Password:="1234"
+Cells.Select
+Selection.Locked = True
+With Selection.Interior
+.Pattern = xlNone
+
+End Sub

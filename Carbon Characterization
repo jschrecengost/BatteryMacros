@@ -1,0 +1,265 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox1.Text
+Dim processStep As String
+processStep = TextBox2.Text
+Dim carbonID As String
+carbonID = TextBox3.Text
+Dim batchID As String
+batchID = TextBox4.Text
+Dim lotID As String
+lotID = TextBox5.Text
+Dim dateCharacterized As String
+dateCharacterized = TextBox6.Text
+Dim poreSizeDistribution As String
+poreSizeDistribution = TextBox7.Text
+Dim poreSizeMethod As String
+poreSizeMethod = TextBox8.Text
+Dim conductivity As String
+conductivity = TextBox9.Text
+Dim conductivityMehtod As String
+conductivityMehtod = TextBox10.Text
+Dim ph As String
+ph = TextBox11.Text
+Dim phMethod As String
+phMethod = TextBox12.Text
+Dim particleSize As String
+particleSize = TextBox13.Text
+Dim particleSizeMethod As String
+particleSizeMethod = TextBox14.Text
+Dim surfaceArea As String
+surfaceArea = TextBox15.Text
+Dim surfaceAreaMethod As String
+surfaceAreaMethod = TextBox16.Text
+Dim user As String
+user = TextBox17.Text
+Dim notes As String
+notes = TextBox18.Text
+
+
+If recordNumber = "" Then
+MsgBox "Generate Record Number!"
+Exit Sub
+End If
+recordNumber = "'" + recordNumber + "'"
+
+processStep = "'" + processStep + "'"
+
+If carbonID = "" Then
+MsgBox "Add Carbon ID!"
+Exit Sub
+End If
+carbonID = "'" + carbonID + "'"
+
+batchID = "'" + batchID + "'"
+
+lotID = "'" + lotID + "'"
+
+If (dateCheck(dateCharacterized) = True) And dateCharacterized <> "" Then
+dateCharacterized = Format(dateCharacterized, "YYYY-MM-DD")
+TextBox6.Text = dateCharacterized
+dateCharacterized = "'" + dateCharacterized + "'"
+Else
+MsgBox "Please use YYYY-MM-DD Format"
+Exit Sub
+End If
+
+If poreSizeDistribution = "" Then
+MsgBox "Add Pore Size Distribution!"
+Exit Sub
+End If
+poreSizeDistribution = "'" + poreSizeDistribution + "'"
+
+If poreSizeMethod = "" Then
+MsgBox "Add Pore Size Method!"
+Exit Sub
+End If
+poreSizeMethod = "'" + poreSizeMethod + "'"
+
+If conductivity = "" Then
+MsgBox "Add Conductivity!"
+Exit Sub
+End If
+conductivity = "'" + conductivity + "'"
+
+If conductivityMehtod = "" Then
+MsgBox "Add Conductivity Method!"
+Exit Sub
+End If
+conductivityMehtod = "'" + conductivityMehtod + "'"
+
+If ph = "" Then
+MsgBox "Add PH!"
+Exit Sub
+End If
+ph = "'" + ph + "'"
+
+If phMethod = "" Then
+MsgBox "Add PH Method!"
+Exit Sub
+End If
+phMethod = "'" + phMethod + "'"
+
+If particleSize = "" Then
+MsgBox "Add Particle Size!"
+Exit Sub
+End If
+particleSize = "'" + particleSize + "'"
+
+If particleSizeMethod = "" Then
+MsgBox "Add Particle Size Method!"
+Exit Sub
+End If
+particleSizeMethod = "'" + particleSizeMethod + "'"
+
+If surfaceArea = "" Then
+MsgBox "Add Surface Area!"
+Exit Sub
+End If
+surfaceArea = "'" + surfaceArea + "'"
+
+If surfaceAreaMethod = "" Then
+MsgBox "Add Surface Area Method!"
+Exit Sub
+End If
+surfaceAreaMethod = "'" + surfaceAreaMethod + "'"
+
+If user = "" Then
+MsgBox "Add User!"
+Exit Sub
+End If
+user = "'" + user + "'"
+
+notes = "'" + notes + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+
+
+Sql = "insert into battery.carbon_characterization"
+
+Sql = Sql + "(record_number,process_step,carbon_id,batch_id,lot_id,date_characterized,pore_size_distribution,pore_size_method,conductivity,"
+Sql = Sql + "conductivity_method,ph,ph_method,particle_size,particle_size_method,surface_area,"
+Sql = Sql + "surface_area_method,user,notes)"
+Sql = Sql + " values(" & recordNumber & "," & processStep & "," & batchID & "," & carbonID
+Sql = Sql + "," & lotID & "," & dateCharacterized & ", " & poreSizeDistribution & "," & poreSizeMethod & "," & conductivity
+Sql = Sql + "," & conductivityMehtod & "," & ph & "," & phMethod
+Sql = Sql + "," & particleSize & "," & particleSizeMethod & "," & surfaceArea
+Sql = Sql + "," & surfaceAreaMethod & "," & user & "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+
+Private Function dateCheck(ByVal textBoxText As String) As Boolean
+
+dateCheck = False
+Dim datevalue As Date
+On Error GoTo TEST
+datevalue = CDate(textBoxText)
+
+Dim testString
+testString = Format(textBoxText, "YYYY-MM-DD")
+
+If (IsDate(textBoxText)) Then
+dateCheck = True
+Exit Function
+
+TEST:
+ MsgBox "ERROR"
+ 
+Else
+  MsgBox "Please use a valid yyyy-mm-dd date format!"
+
+End If
+ 
+End Function
+
+
+Private Sub generate_Click()
+
+Worksheets("Carbon Characterization").Activate
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+
+
+Set con = New ADODB.Connection
+
+
+Dim mysql As String
+mysql = "SELECT record_number FROM carbon_characterization order by record_number desc limit 1"
+Set rs = New ADODB.Recordset
+rs.Open mysql, con, adOpenStatic
+
+'----------------------------------------
+TextBox1.Enabled = True
+
+Dim splitString As String
+splitString = (rs(0))
+Dim currentMaxSampleNumber As Integer
+currentMaxSampleNumber = CInt(splitString)
+currentMaxSampleNumber = currentMaxSampleNumber + 1
+TextBox1.Value = CStr(currentMaxSampleNumber)
+
+TextBox1.Enabled = False
+'----------------------------------------
+rs.Close
+con.Close
+
+End Sub
+
+Private Sub TextBox7_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+
+Private Sub TextBox9_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+
+Private Sub TextBox11_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+
+Private Sub TextBox13_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub

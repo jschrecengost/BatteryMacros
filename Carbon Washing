@@ -1,0 +1,235 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox1.Text
+Dim processStep As String
+processStep = TextBox2.Text
+Dim carbonID As String
+carbonID = TextBox3.Text
+Dim description As String
+description = TextBox4.Text
+Dim washDate As String
+washDate = TextBox5.Text
+Dim washTime As String
+washTime = TextBox6.Text
+Dim station As String
+station = TextBox7.Text
+Dim prewashAmount As String
+prewashAmount = TextBox8.Text
+Dim postWashAmount As String
+postWashAmount = TextBox9.Text
+Dim finalPH As String
+finalPH = TextBox10.Text
+Dim phMethod As String
+phMethod = TextBox11.Text
+Dim finalConductivity As String
+finalConductivity = TextBox12.Text
+Dim conductivityMethod As String
+conductivityMethod = TextBox13.Text
+Dim user As String
+user = TextBox14.Text
+Dim notes As String
+notes = TextBox15.Text
+
+If recordNumber = "" Then
+MsgBox "Generate Record Number!"
+Exit Sub
+End If
+recordNumber = "'" + recordNumber + "'"
+
+processStep = "'" + processStep + "'"
+
+If carbonID = "" Then
+MsgBox "Add Carbon ID!"
+Exit Sub
+End If
+carbonID = "'" + carbonID + "'"
+
+description = "'" + description + "'"
+
+If (dateCheck(washDate) = True) And washDate <> "" Then
+washDate = Format(washDate, "YYYY-MM-DD")
+TextBox5.Text = washDate
+washDate = "'" + washDate + "'"
+Else
+MsgBox "Please use YYYY-MM-DD Format"
+Exit Sub
+End If
+
+If washTime = "" Then
+MsgBox "Add Wash Time!"
+Exit Sub
+End If
+washTime = "'" + washTime + "'"
+
+station = "'" + station + "'"
+
+If prewashAmount = "" Then
+MsgBox "Add Pre Wash Amount!"
+Exit Sub
+End If
+prewashAmount = "'" + prewashAmount + "'"
+
+If postWashAmount = "" Then
+MsgBox "Add Post Wash Amount!"
+Exit Sub
+End If
+postWashAmount = "'" + postWashAmount + "'"
+
+If finalPH = "" Then
+MsgBox "Add Final PH!"
+Exit Sub
+End If
+finalPH = "'" + finalPH + "'"
+
+If phMethod = "" Then
+MsgBox "Add PH Method!"
+Exit Sub
+End If
+phMethod = "'" + phMethod + "'"
+
+If finalConductivity = "" Then
+MsgBox "Add Final Conductivity!"
+Exit Sub
+End If
+finalConductivity = "'" + finalConductivity + "'"
+
+If conductivityMethod = "" Then
+MsgBox "Add Conductivity Method!"
+Exit Sub
+End If
+conductivityMethod = "'" + conductivityMethod + "'"
+
+If user = "" Then
+MsgBox "Add User!"
+Exit Sub
+End If
+user = "'" + user + "'"
+
+notes = "'" + notes + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+
+
+Sql = "insert into battery.carbon_washing"
+
+Sql = Sql + "(record_number,process_step,carbon_id,description,washing_date,wash_time,station,prewashing_amount,post_washing_yield,"
+Sql = Sql + "final_ph,ph_method,final_conductivity,conductivity_method,user,"
+Sql = Sql + "notes)"
+Sql = Sql + " values(" & recordNumber & "," & processStep & "," & carbonID & "," & description
+Sql = Sql + "," & washDate & "," & washTime & ", " & station & "," & prewashAmount & "," & postWashAmount
+Sql = Sql + "," & finalPH & "," & phMethod & "," & finalConductivity
+Sql = Sql + "," & conductivityMethod & "," & user & "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+
+Private Function dateCheck(ByVal textBoxText As String) As Boolean
+
+dateCheck = False
+Dim datevalue As Date
+On Error GoTo TEST
+datevalue = CDate(textBoxText)
+
+Dim testString
+testString = Format(textBoxText, "YYYY-MM-DD")
+
+If (IsDate(textBoxText)) Then
+dateCheck = True
+Exit Function
+
+TEST:
+ MsgBox "ERROR"
+ 
+Else
+  MsgBox "Please use a valid yyyy-mm-dd date format!"
+
+End If
+ 
+End Function
+
+
+Private Sub generate_Click()
+
+Worksheets("Carbon Washing").Activate
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+
+
+Set con = New ADODB.Connection
+
+Dim mysql As String
+mysql = "SELECT record_number FROM carbon_washing order by record_number desc limit 1"
+Set rs = New ADODB.Recordset
+rs.Open mysql, con, adOpenStatic
+
+'----------------------------------------
+TextBox1.Enabled = True
+
+Dim splitString As String
+splitString = (rs(0))
+Dim currentMaxSampleNumber As Integer
+currentMaxSampleNumber = CInt(splitString)
+currentMaxSampleNumber = currentMaxSampleNumber + 1
+TextBox1.Value = CStr(currentMaxSampleNumber)
+
+TextBox1.Enabled = False
+'----------------------------------------
+rs.Close
+con.Close
+
+End Sub
+
+Private Sub TextBox8_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+Private Sub TextBox9_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+Private Sub TextBox10_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+Private Sub TextBox12_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub

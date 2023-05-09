@@ -1,0 +1,238 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox1.Text
+Dim processStep As String
+processStep = TextBox2.Text
+Dim carbonID As String
+carbonID = TextBox3.Text
+Dim batchID As String
+batchID = TextBox4.Text
+Dim runDate As String
+runDate = TextBox5.Text
+Dim runID As String
+runID = TextBox6.Text
+Dim amountNaHCO3 As String
+amountNaHCO3 = TextBox7.Text
+Dim amountDI As String
+amountDI = TextBox8.Text
+Dim clockStart As String
+clockStart = TextBox9.Text
+Dim clockEnd As String
+clockEnd = TextBox10.Text
+Dim totalTime As String
+totalTime = TextBox11.Text
+Dim startingMass As String
+startingMass = TextBox12.Text
+Dim finalMass As String
+finalMass = TextBox13.Text
+Dim ph As String
+ph = TextBox14.Text
+Dim phMethod As String
+phMethod = TextBox15.Text
+Dim user As String
+user = TextBox16.Text
+Dim notes As String
+notes = TextBox17.Text
+
+If recordNumber = "" Then
+MsgBox "Generate Record Number!"
+Exit Sub
+End If
+recordNumber = "'" + recordNumber + "'"
+
+processStep = "'" + processStep + "'"
+
+If carbonID = "" Then
+MsgBox "Add Carbon ID!"
+Exit Sub
+End If
+carbonID = "'" + carbonID + "'"
+
+batchID = "'" + batchID + "'"
+
+If (dateCheck(runDate) = True) And runDate <> "" Then
+runDate = Format(runDate, "YYYY-MM-DD")
+TextBox5.Text = runDate
+runDate = "'" + runDate + "'"
+Else
+MsgBox "Please use YYYY-MM-DD Format"
+Exit Sub
+End If
+
+runID = "'" + runID + "'"
+
+If amountNaHCO3 = "" Then
+MsgBox "Add Amount NaHCO3!"
+Exit Sub
+End If
+amountNaHCO3 = "'" + amountNaHCO3 + "'"
+
+If amountDI = "" Then
+MsgBox "Add Amount DI Water!"
+Exit Sub
+End If
+amountDI = "'" + amountDI + "'"
+
+clockStart = "'" + clockStart + "'"
+
+clockEnd = "'" + clockEnd + "'"
+
+If totalTime = "" Then
+MsgBox "Add Total Time!"
+Exit Sub
+End If
+totalTime = "'" + totalTime + "'"
+
+If startingMass = "" Then
+MsgBox "Add Starting Mass!"
+Exit Sub
+End If
+startingMass = "'" + startingMass + "'"
+
+If finalMass = "" Then
+MsgBox "Add Final Mass!"
+Exit Sub
+End If
+finalMass = "'" + finalMass + "'"
+
+If ph = "" Then
+MsgBox "Add PH!"
+Exit Sub
+End If
+ph = "'" + ph + "'"
+
+If phMethod = "" Then
+MsgBox "Add PH Method!"
+Exit Sub
+End If
+phMethod = "'" + phMethod + "'"
+
+If user = "" Then
+MsgBox "Add user!"
+Exit Sub
+End If
+user = "'" + user + "'"
+
+notes = "'" + notes + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+
+
+Sql = "insert into battery.carbon_Neutralization"
+
+Sql = Sql + "(record_number,process_step,carbon_id,batch_id,run_date,run_id,amount_sodium_bicarbonate,amount_di_water,clock_time_start,"
+Sql = Sql + "clock_time_end,total_time,starting_mass,final_mass,ph,ph_method,"
+Sql = Sql + "user,notes)"
+Sql = Sql + " values(" & recordNumber & "," & carbonID & "," & processStep & "," & batchID
+Sql = Sql + "," & runDate & "," & runID & ", " & amountNaHCO3 & "," & amountDI & "," & clockStart
+Sql = Sql + "," & clockEnd & "," & totalTime & "," & startingMass
+Sql = Sql + "," & finalMass & "," & ph & "," & phMethod
+Sql = Sql + "," & user & "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+
+Private Function dateCheck(ByVal textBoxText As String) As Boolean
+
+dateCheck = False
+Dim datevalue As Date
+On Error GoTo TEST
+datevalue = CDate(textBoxText)
+
+Dim testString
+testString = Format(textBoxText, "YYYY-MM-DD")
+
+If (IsDate(textBoxText)) Then
+dateCheck = True
+Exit Function
+
+TEST:
+ MsgBox "ERROR"
+ 
+Else
+  MsgBox "Please use a valid yyyy-mm-dd date format!"
+
+End If
+ 
+End Function
+
+
+Private Sub generate_Click()
+
+Worksheets("Carbon Neutralization").Activate
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+
+
+Set con = New ADODB.Connection
+
+Dim mysql As String
+mysql = "SELECT record_number FROM carbon_neutralization order by record_number desc limit 1"
+Set rs = New ADODB.Recordset
+rs.Open mysql, con, adOpenStatic
+
+'----------------------------------------
+TextBox1.Enabled = True
+
+Dim splitString As String
+splitString = (rs(0))
+Dim currentMaxSampleNumber As Integer
+currentMaxSampleNumber = CInt(splitString)
+currentMaxSampleNumber = currentMaxSampleNumber + 1
+TextBox1.Value = CStr(currentMaxSampleNumber)
+
+TextBox1.Enabled = False
+'----------------------------------------
+rs.Close
+con.Close
+
+End Sub
+
+Private Sub TextBox12_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+
+Private Sub TextBox13_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+
+Private Sub TextBox14_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub

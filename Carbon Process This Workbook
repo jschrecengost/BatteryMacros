@@ -1,0 +1,89 @@
+Private Sub Workbook_Open()
+With Sheet1.ComboBox1
+.Clear
+.AddItem "jared"
+.AddItem "chuck"
+.AddItem "rob"
+.AddItem "other"
+End With
+
+With Sheet2.ComboBox2
+.Clear
+.AddItem "BET"
+.AddItem "MIP"
+.AddItem "SP"
+.AddItem "other"
+End With
+
+With Sheet2.ComboBox3
+.Clear
+.AddItem "Conductivity Meter"
+.AddItem "other"
+End With
+
+With Sheet2.ComboBox4
+.Clear
+.AddItem "PH Meter"
+.AddItem "Litmus Paper"
+.AddItem "other"
+End With
+
+With Sheet2.ComboBox5
+.Clear
+.AddItem "Malvern"
+.AddItem "other"
+End With
+
+
+
+With Sheet2.ComboBox1
+.Clear
+.AddItem "jared"
+.AddItem "chuck"
+.AddItem "rob"
+.AddItem "other"
+
+End With
+
+With Sheet5.ComboBox1
+.Clear
+.AddItem "jared"
+.AddItem "chuck"
+.AddItem "rob"
+.AddItem "other"
+
+End With
+
+With Sheet3.ComboBox1
+.Clear
+.AddItem "jared"
+.AddItem "chuck"
+.AddItem "rob"
+.AddItem "other"
+
+End With
+
+With Sheet4.ComboBox1
+.Clear
+.AddItem "jared"
+.AddItem "chuck"
+.AddItem "rob"
+.AddItem "other"
+End With
+
+With Sheet4.ComboBox2
+.Clear
+.AddItem "Conductivity Meter"
+.AddItem "other"
+End With
+
+With Sheet4.ComboBox3
+.Clear
+.AddItem "PH Meter"
+.AddItem "Litmus Paper"
+.AddItem "other"
+End With
+
+
+End Sub
+

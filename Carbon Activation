@@ -1,0 +1,270 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox1.Text
+Dim processStep As String
+processStep = TextBox2.Text
+Dim carbonID As String
+carbonID = TextBox3.Text
+Dim carbonLotID As String
+carbonLotID = TextBox4.Text
+Dim carbonAmount As String
+carbonAmount = TextBox5.Text
+Dim H2SO4Lot As String
+H2SO4Lot = TextBox6.Text
+Dim H2SO4Volume As String
+H2SO4Volume = TextBox7.Text
+Dim HNO3Lot As String
+HNO3Lot = TextBox8.Text
+Dim HNO3Volume As String
+HNO3Volume = TextBox9.Text
+Dim NaHCO3Amount As String
+NaHCO3Amount = TextBox10.Text
+Dim runDate As String
+runDate = TextBox11.Text
+Dim runID As String
+runID = TextBox12.Text
+Dim clockTime As String
+clockTime = TextBox13.Text
+Dim clockStart As String
+clockStart = TextBox14.Text
+Dim clockEnd As String
+clockEnd = TextBox15.Text
+Dim n2Gas As String
+n2Gas = TextBox16.Text
+Dim maxProcessTemp As String
+maxProcessTemp = TextBox17.Text
+Dim MaxTempTime As String
+MaxTempTime = TextBox18.Text
+Dim timeHNO3 As String
+timeHNO3 = TextBox19.Text
+Dim phase2Start As String
+phase2Start = TextBox20.Text
+Dim phase2End As String
+phase2End = TextBox21.Text
+Dim phase3Start As String
+phase3Start = TextBox22.Text
+Dim phase3End As String
+phase3End = TextBox23.Text
+Dim heating As String
+heating = TextBox24.Text
+Dim targetHeatingTemp As String
+targetHeatingTemp = TextBox25.Text
+Dim maxTemp As String
+maxTemp = TextBox26.Text
+Dim user As String
+user = TextBox27.Text
+
+
+recordNumber = "'" + recordNumber + "'"
+
+processStep = "'" + processStep + "'"
+
+carbonID = "'" + carbonID + "'"
+
+carbonLotID = "'" + carbonLotID + "'"
+
+carbonAmount = "'" + carbonAmount + "'"
+
+H2SO4Lot = "'" + H2SO4Lot + "'"
+
+H2SO4Volume = "'" + H2SO4Volume + "'"
+
+HNO3Lot = "'" + HNO3Lot + "'"
+
+HNO3Volume = "'" + HNO3Volume + "'"
+
+NaHCO3Amount = "'" + NaHCO3Amount + "'"
+
+If (dateCheck(runDate) = True) And runDate <> "" Then
+runDate = Format(runDate, "YYYY-MM-DD")
+TextBox11.Text = runDate
+runDate = "'" + runDate + "'"
+Else
+MsgBox "Please use YYYY-MM-DD Format"
+Exit Sub
+End If
+
+runID = "'" + runID + "'"
+
+clockTime = "'" + clockTime + "'"
+
+clockStart = "'" + clockStart + "'"
+
+clockEnd = "'" + clockEnd + "'"
+
+n2Gas = "'" + n2Gas + "'"
+
+maxProcessTemp = "'" + maxProcessTemp + "'"
+
+MaxTempTime = "'" + MaxTempTime + "'"
+
+timeHNO3 = "'" + timeHNO3 + "'"
+
+phase2Start = "'" + phase2Start + "'"
+
+phase2End = "'" + phase2End + "'"
+
+phase3Start = "'" + phase3Start + "'"
+
+phase3End = "'" + phase3End + "'"
+
+heating = "'" + heating + "'"
+
+targetHeatingTemp = "'" + targetHeatingTemp + "'"
+
+maxTemp = "'" + maxTemp + "'"
+
+user = "'" + user + "'"
+
+Dim Sql As String
+Sql = ""
+
+
+Sql = "insert into battery.carbon_activation"
+
+Sql = Sql + "(record_number,process_step,carbon_id,carbon_lot_no,carbon_amount,h2so4_reagent_grade_lot_no,h2so4_reagent_grade_volume,"
+Sql = Sql + "hno3_reagant_grade_lot_no,hno3_reagant_grade_volume,sodium_bicarbonate_amount,run_date,run_ID,clock_total_time,"
+Sql = Sql + "clock_start_time,clock_end_time,nitrogen_gas,max_process_type,max_temp_clock_time,clock_time_hno3_additon,"
+Sql = Sql + "phase_2_start, phase_2_end, phase_3_start,phase_3_end,heating,target_heating_temp,max_temp,"
+Sql = Sql + "user)"
+Sql = Sql + " values(" & recordNumber & "," & processStep & "," & carbonID & "," & carbonLotID
+Sql = Sql + "," & carbonAmount & "," & H2SO4Lot & "," & H2SO4Volume & "," & HNO3Lot
+Sql = Sql + "," & HNO3Volume & "," & NaHCO3Amount & "," & runDate
+Sql = Sql + "," & runID & "," & clockTime & "," & clockStart
+Sql = Sql + "," & clockEnd & "," & n2Gas & "," & maxProcessTemp
+Sql = Sql + "," & MaxTempTime & "," & timeHNO3 & "," & phase2Start
+Sql = Sql + "," & phase2End & "," & phase3Start & "," & phase3End
+Sql = Sql + "," & heating & "," & targetHeatingTemp & "," & maxTemp
+Sql = Sql + "," & user & ");"
+
+
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+
+
+Private Function dateCheck(ByVal textBoxText As String) As Boolean
+
+dateCheck = False
+Dim datevalue As Date
+On Error GoTo TEST
+datevalue = CDate(textBoxText)
+
+Dim testString
+testString = Format(textBoxText, "YYYY-MM-DD")
+
+If (IsDate(textBoxText)) Then
+dateCheck = True
+Exit Function
+
+TEST:
+ MsgBox "ERROR"
+ 
+Else
+  MsgBox "Please use a valid yyyy-mm-dd date format!"
+
+End If
+ 
+End Function
+
+
+Private Sub generate_Click()
+
+Worksheets("Carbon Activation").Activate
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+
+
+Set con = New ADODB.Connection
+
+Dim mysql As String
+mysql = "SELECT record_number FROM carbon_activation order by record_number desc limit 1"
+Set rs = New ADODB.Recordset
+rs.Open mysql, con, adOpenStatic
+
+'----------------------------------------
+TextBox1.Enabled = True
+
+Dim splitString As String
+splitString = (rs(0))
+Dim currentMaxSampleNumber As Integer
+currentMaxSampleNumber = CInt(splitString)
+currentMaxSampleNumber = currentMaxSampleNumber + 1
+TextBox1.Value = CStr(currentMaxSampleNumber)
+
+TextBox1.Enabled = False
+'----------------------------------------
+rs.Close
+con.Close
+
+End Sub
+
+Private Sub TextBox5_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+Private Sub TextBox7_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+Private Sub TextBox9_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+Private Sub TextBox10_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+
+Private Sub TextBox1_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+Private Sub TextBox25_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+Private Sub TextBox26_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub

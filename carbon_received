@@ -7,22 +7,24 @@ Set con = New ADODB.Connection
 
 Dim recordNumber As String
 recordNumber = TextBox1.Text
-Dim processID As String
-processID = TextBox2.Text
+Dim processStep As String
+processStep = TextBox2.Text
+Dim carbonID As String
+carbonID = TextBox3.Text
 Dim batchNumber As String
-batchNumber = TextBox3.Text
+batchNumber = TextBox4.Text
 Dim lotID As String
-lotID = TextBox4.Text
+lotID = TextBox5.Text
 Dim supplier As String
-supplier = TextBox5.Text
+supplier = TextBox6.Text
 Dim partNumber As String
-partNumber = TextBox6.Text
+partNumber = TextBox7.Text
 Dim receivedDate As String
-receivedDate = TextBox7.Text
+receivedDate = TextBox8.Text
 Dim description As String
-description = TextBox8.Text
+description = TextBox9.Text
 Dim totalWeight As String
-totalWeight = TextBox9.Text
+totalWeight = TextBox10.Text
 Dim user As String
 user = ComboBox1.Text
 
@@ -34,11 +36,13 @@ Exit Sub
 End If
 recordNumber = "'" + recordNumber + "'"
 
-If processID = "" Then
-MsgBox "Input Process ID!"
+If processStep = "" Then
+MsgBox "Input Process Step!"
 Exit Sub
 End If
-processID = "'" + processID + "'"
+processStep = "'" + processStep + "'"
+
+carbonID = "'" + carbonID + "'"
 
 If batchNumber = "" Then
 MsgBox "Input Batch Number!"
@@ -54,7 +58,7 @@ partNumber = "'" + partNumber + "'"
 
 If (dateCheck(receivedDate) = True) And receivedDate <> "" Then
 receivedDate = Format(receivedDate, "YYYY-MM-DD")
-TextBox7.Text = receivedDate
+TextBox8.Text = receivedDate
 receivedDate = "'" + receivedDate + "'"
 Else
 MsgBox "Please use YYYY-MM-DD Measurement Date Format"
@@ -79,10 +83,10 @@ con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databa
 
 Sql = "insert into battery.carbon_received"
 
-Sql = Sql + "(record_number,process_step,batch_number,lot_id,supplier,"
+Sql = Sql + "(record_number,process_step,carbonID,batch_number,lot_id,supplier,"
 Sql = Sql + "part_number,received_date,description,total_weight_received,"
 Sql = Sql + "user)"
-Sql = Sql + " values(" & recordNumber & "," & processStep & "," & batchNumber
+Sql = Sql + " values(" & recordNumber & "," & processStep & "," & carbonID & "," & batchNumber
 Sql = Sql + "," & lotID & "," & supplier & "," & partNumber
 Sql = Sql + "," & receivedDate & "," & description & "," & totalWeight
 Sql = Sql + "," & user & ");"
@@ -95,17 +99,6 @@ con.Close
 MsgBox "Done!"
 
 End Sub
-
-Private Sub Workbook_Open()
-With Sheet1.ComboBox1
-.AddItem "Rob"
-.AddItem "Jared"
-.AddItem "Chuck"
-.AddItem "Other"
-End With
-
-End Sub
-
 
 Private Function dateCheck(ByVal textBoxText As String) As Boolean
 
@@ -140,9 +133,10 @@ End If
 Next
 End Sub
 
+
 Private Sub generate_Click()
 
-Worksheets("Commercial Carbon Powder").Activate
+Worksheets("Carbon Received").Activate
 Dim con As ADODB.Connection
 Dim rs As ADODB.Recordset
 
@@ -171,8 +165,7 @@ rs.Close
 con.Close
 
 End Sub
-
-Private Sub TextBox9_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+Private Sub TextBox10_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
 If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
 KeyAscii = KeyAscii
 Else
@@ -202,3 +195,10 @@ With Selection.Interior
 .Pattern = xlNone
 
 End Sub
+
+Sub EventRestore()
+
+    Application.EnableEvents = True
+
+End Sub
+

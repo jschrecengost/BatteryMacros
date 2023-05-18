@@ -1,0 +1,130 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox1.Text
+Dim dryingID As String
+dryingID = TextBox2.Text
+Dim dryingTime As String
+dryingTime = TextBox3.Text
+Dim maxTemp As String
+maxTemp = TextBox4.Text
+Dim humidityControlled As String
+humidityControlled = TextBox5.Text
+Dim relativeHumidity As String
+relativeHumidity = TextBox6.Text
+Dim operator As String
+operator = TextBox7.Text
+Dim machine As String
+machine = TextBox8.Text
+Dim dryingStartDate As String
+dryingStartDate = TextBox9.Text
+Dim dryingEndDate As String
+dryingEndDate = TextBox10.Text
+Dim notes As String
+notes = TextBox11.Text
+
+
+If recordNumber = "" Then
+MsgBox "Generate Record Number!"
+Exit Sub
+End If
+recordNumber = "'" + recordNumber + "'"
+
+If dryingID = "" Then
+MsgBox "Add Drying ID!"
+Exit Sub
+End If
+dryingID = "'" + dryingID + "'"
+
+dryingTime = "'" + dryingTime + "'"
+
+maxTemp = "'" + maxTemp + "'"
+
+humidityControlled = "'" + humidityControlled + "'"
+
+relativeHumidity = "'" + relativeHumidity + "'"
+
+operator = "'" + operator + "'"
+
+machine = "'" + machine + "'"
+
+If (dateCheck(dryingStartDate) = True) And dryingStartDate <> "" Then
+dryingStartDate = Format(dryingStartDate, "YYYY-MM-DD")
+TextBox5.Text = dryingStartDate
+dryingStartDate = "'" + dryingStartDate + "'"
+Else
+MsgBox "Please use YYYY-MM-DD Format"
+Exit Sub
+End If
+
+If (dateCheck(dryingEndDate) = True) And dryingEndDate <> "" Then
+dryingEndDate = Format(dryingEndDate, "YYYY-MM-DD")
+TextBox5.Text = dryingEndDate
+dryingEndDate = "'" + dryingEndDate + "'"
+Else
+MsgBox "Please use YYYY-MM-DD Format"
+Exit Sub
+End If
+
+notes = "'" + notes + "'"
+
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+
+
+
+Sql = "insert into battery.drying"
+
+Sql = Sql + "(record_number,drying_id,drying_time,max_temp,humidity_controlled,relative_humidity,operator,machine,drying_start_date,"
+Sql = Sql + "drying_end_date,notes)"
+Sql = Sql + " values(" & recordNumber & "," & dryingID & "," & dryingTime & "," & maxTemp
+Sql = Sql + "," & humidityControlled & "," & relativeHumidity & ", " & operator & "," & machine & "," & dryingStartDate
+Sql = Sql + "," & dryingEndDate & "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+
+Private Function dateCheck(ByVal textBoxText As String) As Boolean
+
+dateCheck = False
+Dim datevalue As Date
+On Error GoTo TEST
+datevalue = CDate(textBoxText)
+
+Dim testString
+testString = Format(textBoxText, "YYYY-MM-DD")
+
+If (IsDate(textBoxText)) Then
+dateCheck = True
+Exit Function
+
+TEST:
+ MsgBox "ERROR"
+ 
+Else
+  MsgBox "Please use a valid yyyy-mm-dd date format!"
+
+End If
+ 
+End Function

@@ -1,0 +1,110 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox1.Text
+Dim coatingID As String
+coatingID = TextBox2.Text
+Dim dryingID As String
+dryingID = TextBox3.Text
+Dim punchingID As String
+punchingID = TextBox4.Text
+Dim cathodeID As String
+cathodeID = TextBox5.Text
+Dim manufacturer As String
+manufacturer = TextBox6.Text
+Dim dateMade As String
+dateMade = TextBox7.Text
+Dim operator As String
+operator = TextBox8.Text
+Dim notes As String
+notes = TextBox9.Text
+
+If recordNumber = "" Then
+MsgBox "Generate Record Number!"
+Exit Sub
+End If
+recordNumber = "'" + recordNumber + "'"
+
+coatingID = "'" + coatingID + "'"
+
+dryingID = "'" + dryingID + "'"
+
+punchingID = "'" + punchingID + "'"
+
+cathodeID = "'" + cathodeID + "'"
+
+manufacturer = "'" + manufacturer + "'"
+
+If (dateCheck(dateMade) = True) And dateMade <> "" Then
+dateMade = Format(dateMade, "YYYY-MM-DD")
+TextBox7.Text = dateMade
+dateMade = "'" + dateMade + "'"
+Else
+MsgBox "Please use YYYY-MM-DD Format"
+Exit Sub
+End If
+
+operator = "'" + operator + "'"
+
+notes = "'" + notes + "'"
+
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+
+
+Sql = "insert into battery.cathode"
+
+Sql = Sql + "(record_number,coating_id,drying_id,punching_id,cathode_id,manufacturer,date_cathode_made,operator,notes)"
+Sql = Sql + " values(" & recordNumber & "," & coatingID & "," & dryingID
+Sql = Sql + "," & punchingID & "," & cathodeID & "," & manufacturer & ", " & dateMade & "," & operator & "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+
+Private Function dateCheck(ByVal textBoxText As String) As Boolean
+
+dateCheck = False
+Dim datevalue As Date
+On Error GoTo TEST
+datevalue = CDate(textBoxText)
+
+Dim testString
+testString = Format(textBoxText, "YYYY-MM-DD")
+
+If (IsDate(textBoxText)) Then
+dateCheck = True
+Exit Function
+
+TEST:
+ MsgBox "ERROR"
+ 
+Else
+  MsgBox "Please use a valid yyyy-mm-dd date format!"
+
+End If
+ 
+End Function
+
+
+

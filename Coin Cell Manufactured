@@ -1,0 +1,140 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox1.Text
+Dim coinCellID As String
+coinCellID = TextBox2.Text
+Dim buildDate As String
+buildDate = TextBox3.Text
+Dim topContainerManufacturer As String
+topContainerManufacturer = TextBox4.Text
+Dim topContainerBatchNo As String
+topContainerBatchNo = TextBox5.Text
+Dim springManufacturer As String
+springManufacturer = TextBox6.Text
+Dim springBatchNo As String
+springBatchNo = TextBox7.Text
+Dim spacerManufacturer As String
+spacerManufacturer = TextBox8.Text
+Dim spacerBatchNo As String
+spacerBatchNo = TextBox9.Text
+Dim anodeManufacturer As String
+anodeManufacturer = TextBox10.Text
+Dim anodeBatchNo As String
+anodeBatchNo = TextBox11.Text
+Dim separatorManufacturer As String
+separatorManufacturer = TextBox12.Text
+Dim separatorBatchNo As String
+separatorBatchNo = TextBox13.Text
+Dim bottomContainerManufacturer As String
+bottomContainerManufacturer = TextBox14.Text
+Dim bottomContainerBatchNo As String
+bottomContainerBatchNo = TextBox15.Text
+Dim user As String
+user = TextBox16.Text
+Dim notes As String
+notes = TextBox17.Text
+
+
+recordNumber = "'" + recordNumber + "'"
+
+coinCellID = "'" + coinCellID + "'"
+
+If (dateCheck(buildDate) = True) And buildDate <> "" Then
+buildDate = Format(buildDate, "YYYY-MM-DD")
+TextBox3.Text = buildDate
+buildDate = "'" + buildDate + "'"
+Else
+MsgBox "Please use YYYY-MM-DD Format"
+Exit Sub
+End If
+
+topContainerManufacturer = "'" + topContainerManufacturer + "'"
+
+topContainerBatchNo = "'" + topContainerBatchNo + "'"
+
+springManufacturer = "'" + springManufacturer + "'"
+
+springBatchNo = "'" + springBatchNo + "'"
+
+spacerManufacturer = "'" + spacerManufacturer + "'"
+
+spacerBatchNo = "'" + spacerBatchNo + "'"
+
+anodeManufacturer = "'" + anodeManufacturer + "'"
+
+anodeBatchNo = "'" + anodeBatchNo + "'"
+
+separatorManufacturer = "'" + separatorManufacturer + "'"
+
+separatorBatchNo = "'" + separatorBatchNo + "'"
+
+bottomContainerManufacturer = "'" + bottomContainerManufacturer + "'"
+
+bottomContainerBatchNo = "'" + bottomContainerBatchNo + "'"
+
+user = "'" + user + "'"
+
+notes = "'" + notes + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+
+
+Sql = "insert into battery.coin_cell_manufactured"
+
+Sql = Sql + "(record_number,coin_cell_id,build_date,top_container_maufacturer,top_container_batch_no,spring_manufacturer,spring_batch_no,spacer_manufacturer,spacer_batch_no,"
+Sql = Sql + "anode_manufacturer,anode_batch_no,separator_manufacturer,separator_batch_no,bottom_container_manufacturer,bottom_container_batch_no,"
+Sql = Sql + "user,notes)"
+Sql = Sql + " values(" & recordNumber & "," & coinCellID & "," & buildDate & "," & topContainerManufacturer
+Sql = Sql + "," & topContainerBatchNo & "," & springManufacturer & ", " & springBatchNo & "," & spacerManufacturer & "," & spacerBatchNo
+Sql = Sql + "," & anodeManufacturer & "," & anodeBatchNo & "," & separatorManufacturer
+Sql = Sql + "," & separatorBatchNo & "," & bottomContainerManufacturer & "," & bottomContainerBatchNo
+Sql = Sql + "," & user & "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+
+Private Function dateCheck(ByVal textBoxText As String) As Boolean
+
+dateCheck = False
+Dim datevalue As Date
+On Error GoTo TEST
+datevalue = CDate(textBoxText)
+
+Dim testString
+testString = Format(textBoxText, "YYYY-MM-DD")
+
+If (IsDate(textBoxText)) Then
+dateCheck = True
+Exit Function
+
+TEST:
+ MsgBox "ERROR"
+ 
+Else
+  MsgBox "Please use a valid yyyy-mm-dd date format!"
+
+End If
+ 
+End Function

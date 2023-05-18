@@ -1,0 +1,127 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox1.Text
+Dim coatingID As String
+coatingID = TextBox2.Text
+Dim slurryID As String
+slurryID = TextBox3.Text
+Dim coatingDate As String
+coatingDate = TextBox4.Text
+Dim coatingSpeed As String
+coatingSpeed = TextBox5.Text
+Dim bladeGap As String
+bladeGap = TextBox6.Text
+Dim aluminumFoil As String
+aluminumFoil = TextBox7.Text
+Dim aluminumFoilType As String
+aluminumFoilType = TextBox8.Text
+Dim aluminumFoilThickness As String
+aluminumFoilThickness = TextBox9.Text
+Dim thinned As String
+thinned = TextBox10.Text
+Dim oneOrTwoSided As String
+oneOrTwoSided = TextBox11.Text
+Dim operator As String
+operator = TextBox12.Text
+Dim machine As String
+machine = TextBox13.Text
+Dim notes As String
+notes = TextBox13.Text
+
+
+recordNumber = "'" + recordNumber + "'"
+
+coatingID = "'" + coatingID + "'"
+
+slurryID = "'" + slurryID + "'"
+
+If (dateCheck(coatingDate) = True) And coatingDate <> "" Then
+coatingDate = Format(coatingDate, "YYYY-MM-DD")
+TextBox4.Text = coatingDate
+coatingDate = "'" + coatingDate + "'"
+Else
+MsgBox "Please use YYYY-MM-DD Format"
+Exit Sub
+End If
+
+coatingSpeed = "'" + coatingSpeed + "'"
+
+bladeGap = "'" + bladeGap + "'"
+
+aluminumFoil = "'" + aluminumFoil + "'"
+
+aluminumFoilType = "'" + aluminumFoilType + "'"
+
+aluminumFoilThickness = "'" + aluminumFoilThickness + "'"
+
+thinned = "'" + thinned + "'"
+
+oneOrTwoSided = "'" + oneOrTwoSided + "'"
+
+operator = "'" + operator + "'"
+
+machine = "'" + machine + "'"
+
+notes = "'" + notes + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+
+
+
+Sql = "insert into battery.coating"
+
+Sql = Sql + "(record_number,coating_id,slurry_id,coating_date,coating_speed, blade_gap,aluminum_foil,aluminum_foil_type,aluminum_foil_thickness,thinned,"
+Sql = Sql + "one_or_two_sided,operator,machine,notes)"
+Sql = Sql + " values(" & recordNumber & "," & coatingID & "," & slurryID & "," & coatingDate & "," & coatingSpeed
+Sql = Sql + "," & bladeGap & "," & aluminumFoil & ", " & aluminumFoilType & "," & aluminumFoilThickness & "," & thinned
+Sql = Sql + "," & oneOrTwoSided & "," & operator & "," & machine
+Sql = Sql + "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+
+Private Function dateCheck(ByVal textBoxText As String) As Boolean
+
+dateCheck = False
+Dim datevalue As Date
+On Error GoTo TEST
+datevalue = CDate(textBoxText)
+
+Dim testString
+testString = Format(textBoxText, "YYYY-MM-DD")
+
+If (IsDate(textBoxText)) Then
+dateCheck = True
+Exit Function
+
+TEST:
+ MsgBox "ERROR"
+ 
+Else
+  MsgBox "Please use a valid yyyy-mm-dd date format!"
+
+End If
+ 
+End Function

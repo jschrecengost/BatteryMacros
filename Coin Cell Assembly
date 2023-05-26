@@ -1,0 +1,144 @@
+Private Sub CommandButton1_Click()
+
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set con = New ADODB.Connection
+
+Dim recordNumber As String
+recordNumber = TextBox1.Text
+Dim coinCellID As String
+coinCellID = TextBox2.Text
+Dim batteryType As String
+batteryType = ComboBox3.Text
+Dim buildDate As String
+buildDate = TextBox4.Text
+Dim totalDiskWeight As String
+totalDiskWeight = TextBox5.Text
+Dim totalDiskThickness As String
+totalDiskThickness = TextBox6.Text
+Dim electrolyteID As String
+electrolyteID = TextBox7.Text
+Dim electrolyteAmount As String
+electrolyteAmount = TextBox8.Text
+Dim electrolyteSLoading As String
+electrolyteSLoading = TextBox11.Text
+Dim cathodeID As String
+cathodeID = TextBox12.Text
+Dim noSeparators As String
+noSeparators = TextBox13.Text
+Dim typeSeparators As String
+typeSeparators = TextBox14.Text
+Dim clampingForce As String
+clampingForce = TextBox15.Text
+Dim operator As String
+operator = ComboBox1.Text
+Dim notes As String
+notes = TextBox16.Text
+
+
+recordNumber = "'" + recordNumber + "'"
+
+coinCellID = "'" + coinCellID + "'"
+
+batteryType = "'" + batteryType + "'"
+
+If (dateCheck(buildDate) = True) And buildDate <> "" Then
+buildDate = Format(buildDate, "YYYY-MM-DD")
+TextBox4.Text = buildDate
+buildDate = "'" + buildDate + "'"
+Else
+MsgBox "Please use YYYY-MM-DD Format"
+Exit Sub
+End If
+
+totalDiskWeight = "'" + totalDiskWeight + "'"
+
+totalDiskThickness = "'" + totalDiskThickness + "'"
+
+electrolyteID = "'" + electrolyteID + "'"
+
+electrolyteAmount = "'" + electrolyteAmount + "'"
+
+electrolyteSLoading = "'" + electrolyteSLoading + "'"
+
+cathodeID = "'" + cathodeID + "'"
+
+noSeparators = "'" + noSeparators + "'"
+
+typeSeparators = "'" + typeSeparators + "'"
+
+clampingForce = "'" + clampingForce + "'"
+
+operator = "'" + operator + "'"
+
+notes = "'" + notes + "'"
+
+
+Dim Sql As String
+Sql = ""
+
+
+'MsgBox validateString(sampleLetter)
+
+
+'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
+'Above line shows how to convert an unformatted date string to a MySQL format string
+
+
+
+
+Sql = "insert into battery.coin_cell_build"
+
+Sql = Sql + "(record_number,coin_cell_id,battery_type,build_date,total_disk_weight,total_disk_thickness, electrolyte_id,amount_electrolyte,"
+Sql = Sql + "electrolyte_amount_s_loading, cathode_id, no_of_seperators,type_separator,clamping_force,operator,notes)"
+Sql = Sql + " values(" & recordNumber & "," & coinCellID & "," & batteryType & "," & buildDate & "," & totalDiskWeight & "," & totalDiskThickness
+Sql = Sql + "," & electrolyteID & "," & electrolyteAmount & ", " & electrolyteSLoading & "," & cathodeID
+Sql = Sql + "," & noSeparators & "," & typeSeparators & "," & clampingForce & "," & operator
+Sql = Sql + "," & notes & ");"
+
+
+'MsgBox Sql
+'Above line displays a messagebox with the current value of the variable Sql
+con.Execute Sql
+con.Close
+MsgBox "Done!"
+
+End Sub
+
+Sub refresh_Click()
+Dim var
+var = Module3.refresh
+End Sub
+
+
+Private Sub CommandButton2_Click()
+
+Worksheets("Coin Cell Assembly").Activate
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
+
+
+Set con = New ADODB.Connection
+
+
+Dim mysql As String
+mysql = "SELECT record_number FROM coin_cell_build order by record_number desc limit 1"
+Set rs = New ADODB.Recordset
+rs.Open mysql, con, adOpenStatic
+
+'----------------------------------------
+TextBox1.Enabled = True
+
+Dim splitString As String
+splitString = (rs(0))
+Dim currentMaxSampleNumber As Integer
+currentMaxSampleNumber = CInt(splitString)
+currentMaxSampleNumber = currentMaxSampleNumber + 1
+TextBox1.Value = CStr(currentMaxSampleNumber)
+
+TextBox1.Enabled = False
+'----------------------------------------
+rs.Close
+con.Close
+
+End Sub

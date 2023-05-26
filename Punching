@@ -97,7 +97,6 @@ Dim rs As ADODB.Recordset
 
 Set con = New ADODB.Connection
 
-con.Open "Driver={MySQL ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Database=battery; User=battery;Password=3point14;"
 Dim mysql As String
 mysql = "SELECT record_number FROM punching order by record_number desc limit 1"
 Set rs = New ADODB.Recordset

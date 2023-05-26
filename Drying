@@ -13,17 +13,17 @@ dryingTime = TextBox3.Text
 Dim maxTemp As String
 maxTemp = TextBox4.Text
 Dim humidityControlled As String
-humidityControlled = TextBox5.Text
+humidityControlled = ComboBox1.Text
 Dim relativeHumidity As String
 relativeHumidity = TextBox6.Text
-Dim operator As String
-operator = TextBox7.Text
 Dim machine As String
-machine = TextBox8.Text
+machine = TextBox7.Text
 Dim dryingStartDate As String
-dryingStartDate = TextBox9.Text
+dryingStartDate = TextBox8.Text
 Dim dryingEndDate As String
-dryingEndDate = TextBox10.Text
+dryingEndDate = TextBox9.Text
+Dim operator As String
+operator = ComboBox2.Text
 Dim notes As String
 notes = TextBox11.Text
 
@@ -48,13 +48,11 @@ humidityControlled = "'" + humidityControlled + "'"
 
 relativeHumidity = "'" + relativeHumidity + "'"
 
-operator = "'" + operator + "'"
-
 machine = "'" + machine + "'"
 
 If (dateCheck(dryingStartDate) = True) And dryingStartDate <> "" Then
 dryingStartDate = Format(dryingStartDate, "YYYY-MM-DD")
-TextBox5.Text = dryingStartDate
+TextBox9.Text = dryingStartDate
 dryingStartDate = "'" + dryingStartDate + "'"
 Else
 MsgBox "Please use YYYY-MM-DD Format"
@@ -63,12 +61,14 @@ End If
 
 If (dateCheck(dryingEndDate) = True) And dryingEndDate <> "" Then
 dryingEndDate = Format(dryingEndDate, "YYYY-MM-DD")
-TextBox5.Text = dryingEndDate
+TextBox10.Text = dryingEndDate
 dryingEndDate = "'" + dryingEndDate + "'"
 Else
 MsgBox "Please use YYYY-MM-DD Format"
 Exit Sub
 End If
+
+operator = "'" + operator + "'"
 
 notes = "'" + notes + "'"
 
@@ -84,16 +84,16 @@ Sql = ""
 'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
 'Above line shows how to convert an unformatted date string to a MySQL format string
 
-
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
 
 
 Sql = "insert into battery.drying"
 
-Sql = Sql + "(record_number,drying_id,drying_time,max_temp,humidity_controlled,relative_humidity,operator,machine,drying_start_date,"
-Sql = Sql + "drying_end_date,notes)"
+Sql = Sql + "(record_number,drying_id,drying_time,max_temp,humidity_controlled,relative_humidity,machine,drying_start_date,"
+Sql = Sql + "drying_end_date,operator,notes)"
 Sql = Sql + " values(" & recordNumber & "," & dryingID & "," & dryingTime & "," & maxTemp
-Sql = Sql + "," & humidityControlled & "," & relativeHumidity & ", " & operator & "," & machine & "," & dryingStartDate
-Sql = Sql + "," & dryingEndDate & "," & notes & ");"
+Sql = Sql + "," & humidityControlled & "," & relativeHumidity & "," & machine & "," & dryingStartDate
+Sql = Sql + "," & dryingEndDate & "," & operator & "," & notes & ");"
 
 
 'MsgBox Sql
@@ -104,27 +104,60 @@ MsgBox "Done!"
 
 End Sub
 
+Sub refresh_Click()
+Dim var
+var = Module3.refresh
+End Sub
 
-Private Function dateCheck(ByVal textBoxText As String) As Boolean
+Private Sub CommandButton2_Click()
 
-dateCheck = False
-Dim datevalue As Date
-On Error GoTo TEST
-datevalue = CDate(textBoxText)
+Worksheets("Drying").Activate
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
 
-Dim testString
-testString = Format(textBoxText, "YYYY-MM-DD")
 
-If (IsDate(textBoxText)) Then
-dateCheck = True
-Exit Function
+Set con = New ADODB.Connection
 
-TEST:
- MsgBox "ERROR"
- 
+con.Open "Driver={MySQL ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Database=battery; User=battery;Password=3point14;"
+Dim mysql As String
+mysql = "SELECT record_number FROM drying order by record_number desc limit 1"
+Set rs = New ADODB.Recordset
+rs.Open mysql, con, adOpenStatic
+
+'----------------------------------------
+TextBox1.Enabled = True
+
+Dim splitString As String
+splitString = (rs(0))
+Dim currentMaxSampleNumber As Integer
+currentMaxSampleNumber = CInt(splitString)
+currentMaxSampleNumber = currentMaxSampleNumber + 1
+TextBox1.Value = CStr(currentMaxSampleNumber)
+
+TextBox1.Enabled = False
+'----------------------------------------
+rs.Close
+con.Close
+
+End Sub
+
+
+Private Sub TextBox5_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
 Else
-  MsgBox "Please use a valid yyyy-mm-dd date format!"
-
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
 End If
- 
-End Function
+End Sub
+
+
+Private Sub TextBox4_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+

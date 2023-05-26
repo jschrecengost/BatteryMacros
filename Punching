@@ -17,7 +17,7 @@ punchingSize = TextBox5.Text
 Dim punchingDate As String
 punchingDate = TextBox6.Text
 Dim operator As String
-operator = TextBox7.Text
+operator = ComboBox1.Text
 Dim notes As String
 notes = TextBox8.Text
 
@@ -64,7 +64,7 @@ Sql = ""
 'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
 'Above line shows how to convert an unformatted date string to a MySQL format string
 
-
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
 
 
 Sql = "insert into battery.punching"
@@ -83,27 +83,62 @@ MsgBox "Done!"
 End Sub
 
 
-Private Function dateCheck(ByVal textBoxText As String) As Boolean
+Sub refresh_Click()
+Dim var
+var = Module3.refresh
+End Sub
 
-dateCheck = False
-Dim datevalue As Date
-On Error GoTo TEST
-datevalue = CDate(textBoxText)
+Private Sub CommandButton2_Click()
 
-Dim testString
-testString = Format(textBoxText, "YYYY-MM-DD")
+Worksheets("Punching").Activate
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
 
-If (IsDate(textBoxText)) Then
-dateCheck = True
-Exit Function
 
-TEST:
- MsgBox "ERROR"
- 
+Set con = New ADODB.Connection
+
+con.Open "Driver={MySQL ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Database=battery; User=battery;Password=3point14;"
+Dim mysql As String
+mysql = "SELECT record_number FROM punching order by record_number desc limit 1"
+Set rs = New ADODB.Recordset
+rs.Open mysql, con, adOpenStatic
+
+'----------------------------------------
+TextBox1.Enabled = True
+
+Dim splitString As String
+splitString = (rs(0))
+Dim currentMaxSampleNumber As Integer
+currentMaxSampleNumber = CInt(splitString)
+currentMaxSampleNumber = currentMaxSampleNumber + 1
+TextBox1.Value = CStr(currentMaxSampleNumber)
+
+TextBox1.Enabled = False
+'----------------------------------------
+rs.Close
+con.Close
+
+End Sub
+
+
+Private Sub TextBox5_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
 Else
-  MsgBox "Please use a valid yyyy-mm-dd date format!"
-
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
 End If
- 
-End Function
+End Sub
+
+
+
+Private Sub TextBox4_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+
 

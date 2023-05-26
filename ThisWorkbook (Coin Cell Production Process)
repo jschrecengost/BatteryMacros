@@ -1,0 +1,129 @@
+Private Sub Workbook_Open()
+With Sheet4.ComboBox1
+.Clear
+.AddItem "Mesh"
+.AddItem "Solid"
+.AddItem "other"
+End With
+
+
+With Sheet4.ComboBox2
+.Clear
+.AddItem "Carbon Coated"
+.AddItem "Uncoated"
+.AddItem "Other"
+End With
+
+With Sheet4.ComboBox3
+.Clear
+.AddItem "Yes"
+.AddItem "No"
+End With
+
+With Sheet4.ComboBox4
+.Clear
+.AddItem "Rob"
+.AddItem "Wen-Qing"
+.AddItem "Adam"
+.AddItem "Tyler"
+.AddItem "Mike"
+.AddItem "Chuck"
+.AddItem "Xinyu Lu"
+.AddItem "Jared"
+.AddItem "Other"
+End With
+
+With Sheet5.ComboBox1
+.Clear
+.AddItem "Yes"
+.AddItem "No"
+End With
+
+With Sheet5.ComboBox2
+.Clear
+.AddItem "Rob"
+.AddItem "Wen-Qing"
+.AddItem "Adam"
+.AddItem "Tyler"
+.AddItem "Mike"
+.AddItem "Chuck"
+.AddItem "Xinyu Lu"
+.AddItem "Jared"
+.AddItem "Other"
+End With
+
+With Sheet6.ComboBox1
+.Clear
+.AddItem "Yes"
+.AddItem "No"
+End With
+
+With Sheet6.ComboBox2
+.Clear
+.AddItem "Rob"
+.AddItem "Wen-Qing"
+.AddItem "Adam"
+.AddItem "Tyler"
+.AddItem "Mike"
+.AddItem "Chuck"
+.AddItem "Xinyu Lu"
+.AddItem "Jared"
+.AddItem "Other"
+End With
+
+
+With Sheet7.ComboBox1
+.Clear
+.AddItem "Rob"
+.AddItem "Wen-Qing"
+.AddItem "Adam"
+.AddItem "Tyler"
+.AddItem "Mike"
+.AddItem "Chuck"
+.AddItem "Xinyu Lu"
+.AddItem "Jared"
+.AddItem "Other"
+End With
+
+With Sheet9.ComboBox2
+.Clear
+.AddItem "Rob"
+.AddItem "Wen-Qing"
+.AddItem "Adam"
+.AddItem "Tyler"
+.AddItem "Mike"
+.AddItem "Chuck"
+.AddItem "Xinyu Lu"
+.AddItem "Jared"
+.AddItem "Other"
+End With
+
+With Sheet10.ComboBox1
+.Clear
+.AddItem "Rob"
+.AddItem "Wen-Qing"
+.AddItem "Adam"
+.AddItem "Tyler"
+.AddItem "Mike"
+.AddItem "Chuck"
+.AddItem "Xinyu Lu"
+.AddItem "Jared"
+.AddItem "Other"
+End With
+
+With Sheet10.ComboBox2
+.Clear
+.AddItem "Dissolved"
+.AddItem "Not-Dissolved"
+End With
+
+With Sheet10.ComboBox3
+.Clear
+.AddItem "2016"
+.AddItem "2032"
+End With
+
+
+
+
+End Sub

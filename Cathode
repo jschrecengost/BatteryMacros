@@ -14,12 +14,18 @@ Dim punchingID As String
 punchingID = TextBox4.Text
 Dim cathodeID As String
 cathodeID = TextBox5.Text
-Dim manufacturer As String
-manufacturer = TextBox6.Text
+Dim mass As String
+mass = TextBox6.Text
+Dim totalThickenss As String
+totalThickenss = TextBox7.Text
+Dim percentHumidity As String
+percentHumidity = TextBox8.Text
+Dim antechamber As String
+antechamber = ComboBox1.Text
 Dim dateMade As String
-dateMade = TextBox7.Text
+dateMade = TextBox10.Text
 Dim operator As String
-operator = TextBox8.Text
+operator = ComboBox2.Text
 Dim notes As String
 notes = TextBox9.Text
 
@@ -37,11 +43,17 @@ punchingID = "'" + punchingID + "'"
 
 cathodeID = "'" + cathodeID + "'"
 
-manufacturer = "'" + manufacturer + "'"
+mass = "'" + mass + "'"
+
+totalThickenss = "'" + totalThickenss + "'"
+
+percentHumidity = "'" + percentHumidity + "'"
+
+antechamber = "'" + antechamber + "'"
 
 If (dateCheck(dateMade) = True) And dateMade <> "" Then
 dateMade = Format(dateMade, "YYYY-MM-DD")
-TextBox7.Text = dateMade
+TextBox10.Text = dateMade
 dateMade = "'" + dateMade + "'"
 Else
 MsgBox "Please use YYYY-MM-DD Format"
@@ -64,13 +76,14 @@ Sql = ""
 'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
 'Above line shows how to convert an unformatted date string to a MySQL format string
 
+con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
 
 
 Sql = "insert into battery.cathode"
 
-Sql = Sql + "(record_number,coating_id,drying_id,punching_id,cathode_id,manufacturer,date_cathode_made,operator,notes)"
+Sql = Sql + "(record_number,coating_id,drying_id,punching_id,cathode_id,mass,thickness,percent_humidity,antechamber,date_cathode_made,operator,notes)"
 Sql = Sql + " values(" & recordNumber & "," & coatingID & "," & dryingID
-Sql = Sql + "," & punchingID & "," & cathodeID & "," & manufacturer & ", " & dateMade & "," & operator & "," & notes & ");"
+Sql = Sql + "," & punchingID & "," & cathodeID & "," & mass & ", " & totalThickenss & "," & percentHumidity & "," & antechamber & "," & dateMade & "," & operator & "," & notes & ");"
 
 
 'MsgBox Sql
@@ -81,30 +94,77 @@ MsgBox "Done!"
 
 End Sub
 
+Sub refresh_Click()
+Dim var
+var = Module3.refresh
+End Sub
 
-Private Function dateCheck(ByVal textBoxText As String) As Boolean
+Private Sub CommandButton2_Click()
 
-dateCheck = False
-Dim datevalue As Date
-On Error GoTo TEST
-datevalue = CDate(textBoxText)
+Worksheets("Cathode").Activate
+Dim con As ADODB.Connection
+Dim rs As ADODB.Recordset
 
-Dim testString
-testString = Format(textBoxText, "YYYY-MM-DD")
 
-If (IsDate(textBoxText)) Then
-dateCheck = True
-Exit Function
+Set con = New ADODB.Connection
 
-TEST:
- MsgBox "ERROR"
- 
+con.Open "Driver={MySQL ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Database=battery; User=battery;Password=3point14;"
+Dim mysql As String
+mysql = "SELECT record_number FROM cathode order by record_number desc limit 1"
+Set rs = New ADODB.Recordset
+rs.Open mysql, con, adOpenStatic
+
+'----------------------------------------
+TextBox1.Enabled = True
+
+Dim splitString As String
+splitString = (rs(0))
+Dim currentMaxSampleNumber As Integer
+currentMaxSampleNumber = CInt(splitString)
+currentMaxSampleNumber = currentMaxSampleNumber + 1
+TextBox1.Value = CStr(currentMaxSampleNumber)
+
+TextBox1.Enabled = False
+'----------------------------------------
+rs.Close
+con.Close
+
+End Sub
+
+
+Private Sub TextBox5_Change()
+
+End Sub
+
+Private Sub TextBox6_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
 Else
-  MsgBox "Please use a valid yyyy-mm-dd date format!"
-
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
 End If
- 
-End Function
+End Sub
+
+Private Sub TextBox7_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+
+
+Private Sub TextBox8_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+If (KeyAscii > 47 And KeyAscii < 58) Or KeyAscii = 46 Or KeyAscii = 32 Then
+KeyAscii = KeyAscii
+Else
+KeyAscii = 0
+MsgBox "Only Numerical Values Allowed!"
+End If
+End Sub
+
+
 
 
 

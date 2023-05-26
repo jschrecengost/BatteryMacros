@@ -80,7 +80,6 @@ Sql = ""
 'Sql = CDate(TextBox07.Text).toString("yyyy-MM-dd")
 'Above line shows how to convert an unformatted date string to a MySQL format string
 
-con.Open "Driver={MySql ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Databbase=battery; User=battery; Password=3point14"
 
 
 Sql = "insert into battery.coating"
@@ -120,7 +119,6 @@ Dim rs As ADODB.Recordset
 
 Set con = New ADODB.Connection
 
-con.Open "Driver={MySQL ODBC 8.0 Unicode Driver}; Server = 10.10.240.151; Database=battery; User=battery;Password=3point14;"
 Dim mysql As String
 mysql = "SELECT record_number FROM coating order by record_number desc limit 1"
 Set rs = New ADODB.Recordset
